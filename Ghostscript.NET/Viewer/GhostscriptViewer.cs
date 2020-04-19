@@ -388,8 +388,11 @@ namespace Ghostscript.NET.Viewer
             args.Add("-dGraphicsAlphaBits=4");
             args.Add("-dGridFitTT=2");              // was 0, but use font hinting; https://www.ghostscript.com/doc/9.52/Language.htm#GridFitTT
 
-            string basedir = Path.GetDirectoryName(_filePath).Replace("\\", "/");
-            args.Add($"--permit-file-all={ basedir }");
+            if (!String.IsNullOrEmpty(_filePath))
+            {
+                string basedir = Path.GetDirectoryName(_filePath).Replace("\\", "/");
+                args.Add($"--permit-file-all={ basedir }");
+            }
 
             // fixes bug: http://bugs.ghostscript.com/show_bug.cgi?id=695180
             if (_interpreter.LibraryRevision > 910 && _interpreter.LibraryRevision <= 921)

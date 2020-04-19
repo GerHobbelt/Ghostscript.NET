@@ -37,8 +37,8 @@ namespace Ghostscript.NET.Samples
     {
         public void Start()
         {
-            string inputFile = @"..\..\..\test.pdf";
-            string outputFile = @"..\..\..\output\page-%04d.png";
+            string inputFile = @"../../../test/test.pdf";
+            string outputFile = @"../../../test/output\page-%04d.png";
 
             const int pageFrom = 1;
             const int pageTo = 50;
@@ -76,6 +76,9 @@ namespace Ghostscript.NET.Samples
                 switches.Add("-dPrinted=false");                    // always treat output device as a screen instead of as a printer for annotations display, etc.
                 switches.Add($"-sOutputFile={outputFile}");
 
+                // make sure the target directory exists:
+                Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
+
 #if false  // doesn't work   :-(
                 // also report the page count as per https://stackoverflow.com/questions/4826485/ghostscript-pdf-total-pages :
                 switches.Add("-q");
@@ -107,61 +110,6 @@ namespace Ghostscript.NET.Samples
         void ghostscript_Processing(object sender, GhostscriptProcessorProcessingEventArgs e)
         {
             Console.WriteLine($"{e.CurrentPage} / { (e.TotalPages == 0 ? @"<unknown>" : e.TotalPages.ToString()) }");
-        }
-
-        private void Start2()
-        {
-            string inputFile = @"E:\__test_data\i1.pdf";
-
-            GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
-
-            string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
-
-            using (GhostscriptProcessor processor = new GhostscriptProcessor())
-            {
-                //"C:\Program Files\gs\gs9.15\bin\gswin64.exe" -sDEVICE=tiff24nc -r300 -dNOPAUSE -dBATCH -sOutputFile="Invoice 1_%03ld.tiff" "Invoice 1.pdf"
-            
-                List<string> switches = new List<string>();
-                switches.Add("-empty");
-                switches.Add("-dQUIET");
-                switches.Add("-dSAFER");
-                switches.Add("-dBATCH");
-                switches.Add("-dNOPAUSE");
-                switches.Add("-dNOPROMPT");
-                switches.Add("-dPrinted");
-                //switches.Add("-sDEVICE=pdfwrite");
-                switches.Add("-sDEVICE=tiff24nc");
-                switches.Add("-sOutputFile=" + outputPipeHandle);
-                switches.Add("-f");
-                switches.Add(inputFile);
-
-                try
-                {
-                    processor.Process(switches.ToArray());
-
-                    byte[] rawDocumentData = gsPipedOutput.Data;
-                    var memStream = new MemoryStream(rawDocumentData);
-                    //var image = new Bitmap(memStream);
-                    //image.Save(@"Invocie 1.tiff");
-                    //if (writeToDatabase)
-                    //{
-                    //    Database.ExecSP("add_document", rawDocumentData);
-                    //}
-                    //else if (writeToDisk)
-                    //{
-                    //    File.WriteAllBytes(@"E:\gss_test\output\test_piped_output.pdf", rawDocumentData);
-                    //}
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-                finally
-                {
-                    gsPipedOutput.Dispose();
-                    gsPipedOutput = null;
-                }
-            }
         }
     }
 }

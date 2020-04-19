@@ -53,8 +53,8 @@ namespace Ghostscript.NET.Samples
             int desired_x_dpi = 96;
             int desired_y_dpi = 96;
 
-            string inputPdfPath = @"E:\gss_test\test.pdf";
-            string outputPath = @"E:\gss_test\output\";
+            string inputPdfPath = @"..\..\..\test\test.pdf";
+            string outputPath = @"..\..\..\test\output\";
 
             using (var rasterizer = new GhostscriptRasterizer())
             {
@@ -77,8 +77,8 @@ namespace Ghostscript.NET.Samples
             int desired_x_dpi = 96;
             int desired_y_dpi = 96;
 
-            string inputPdfPath = @"E:\gss_test\test.pdf";
-            string outputPath = @"E:\gss_test\output\";
+            string inputPdfPath = @"..\..\..\test\test.pdf";
+            string outputPath = @"..\..\..\test\output\";
 
             var output = new DelegateStdIOHandler(
                 stdOut: Console.WriteLine,

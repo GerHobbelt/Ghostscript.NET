@@ -34,8 +34,8 @@ namespace Ghostscript.NET.Samples
     {
         public void Start()
         {
-            string inputFile = @"E:\gss_test\test.pdf";
-            string outputFile = @"E:\gss_test\output\page-%03d.png";
+            string inputFile = @"..\..\..\test\test.pdf";
+            string outputFile = @"..\..\..\test\output\page-%03d.png";
 
             int pageFrom = 1;
             int pageTo = 50;
@@ -71,7 +71,7 @@ namespace Ghostscript.NET.Samples
 
         void processor_Processing(object sender, GhostscriptProcessorProcessingEventArgs e)
         {
-            Console.WriteLine(e.CurrentPage.ToString() + " / " + e.TotalPages.ToString());
+            Console.WriteLine($"{e.CurrentPage} / { (e.TotalPages == 0 ? @"<unknown>" : e.TotalPages.ToString()) }");
         }
 
         public class LogStdio : GhostscriptStdIO

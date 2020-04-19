@@ -1,5 +1,5 @@
 ﻿//
-// PipedOutputSample.cs
+// ProcessorSample.cs
 // This file is part of Ghostscript.NET.Samples project
 //
 // Author: Josip Habjan (habjan@gmail.com, http://www.linkedin.com/in/habjan) 
@@ -25,58 +25,58 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.IO;
-using System.IO.Pipes;
-using System.Threading;
 using System.Collections.Generic;
-
 using Ghostscript.NET.Processor;
+using System.IO;
+using System.Drawing;
+using System.Linq;
 
 namespace Ghostscript.NET.Samples
 {
-    /// <summary>
-    /// Sample that demonstrates how to tell Ghostscript to write the output result to 
-    /// an anonymous pipe (memory) instead of the writing it to the disk.
-    /// </summary>
-    public class PipedOutputSample : ISample
+    public class ProcessorSample3 : ISample
     {
         public void Start()
         {
-            string inputFile = @"..\..\..\test\test_postscript.ps";
+            string inputFile = @"../../../test/test.pdf";
+            string outputFile = @"../../../test/output/test-t2.tiff";
 
             GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
 
-            // pipe handle format: %handle%hexvalue
             string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
 
             using (GhostscriptProcessor processor = new GhostscriptProcessor())
             {
+                //"C:\Program Files\gs\gs9.15\bin\gswin64.exe" -sDEVICE=tiff24nc -r300 -dNOPAUSE -dBATCH -sOutputFile="Invoice 1_%03ld.tiff" "Invoice 1.pdf"
+            
                 List<string> switches = new List<string>();
-                switches.Add("-empty");
+                //switches.Add("-empty");
                 switches.Add("-dQUIET");
                 switches.Add("-dSAFER");
                 switches.Add("-dBATCH");
                 switches.Add("-dNOPAUSE");
                 switches.Add("-dNOPROMPT");
-                switches.Add("-sDEVICE=pdfwrite");
-                switches.Add("-o" + outputPipeHandle);
-                switches.Add("-q");
+                switches.Add("-dPrinted");
+                //switches.Add("-sDEVICE=pdfwrite");
+                switches.Add("-sDEVICE=tiff24nc");
+                switches.Add("-sOutputFile=" + outputPipeHandle);
                 switches.Add("-f");
                 switches.Add(inputFile);
 
                 try
                 {
-                    processor.StartProcessing(switches.ToArray(), null);
+                    processor.Process(switches.ToArray());
 
                     byte[] rawDocumentData = gsPipedOutput.Data;
-
+                    var memStream = new MemoryStream(rawDocumentData);
+                    var image = new Bitmap(memStream);
+                    image.Save(outputFile);
                     //if (writeToDatabase)
                     //{
                     //    Database.ExecSP("add_document", rawDocumentData);
                     //}
                     //else if (writeToDisk)
                     //{
-                    //    File.WriteAllBytes(@"..\..\..\test\output\test_piped_output.pdf", rawDocumentData);
+                    File.WriteAllBytes(outputFile + "__piped_output.data", rawDocumentData);
                     //}
                 }
                 catch (Exception ex)

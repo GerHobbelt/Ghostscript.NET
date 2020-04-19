@@ -193,31 +193,33 @@ namespace Ghostscript.NET
         /// <returns>A dictionary of a page numbers with the ink coverage.</returns>
         public static Dictionary<int, GhostscriptPageInkCoverage> GetInkCoverage(string path, int firstPage, int lastPage, GhostscriptVersionInfo versionInfo)
         {
-            GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
-            string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
+            string output;
 
-            List<string> switches = new List<string>();
-            switches.Add("-empty");
-            switches.Add("-q");
-
-            if (firstPage != 0 && lastPage != 0)
+            using (GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput())
             {
-                switches.Add("-dFirstPage=" + firstPage.ToString());
-                switches.Add("-dLastPage=" + lastPage.ToString());
+                string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
+
+                List<string> switches = new List<string>();
+                switches.Add("-empty");
+                switches.Add("-q");
+
+                if (firstPage != 0 && lastPage != 0)
+                {
+                    switches.Add("-dFirstPage=" + firstPage.ToString());
+                    switches.Add("-dLastPage=" + lastPage.ToString());
+                }
+
+                switches.Add("-o" + outputPipeHandle);
+                switches.Add("-sDEVICE=inkcov");
+                switches.Add(path);
+
+                GhostscriptProcessor proc = new GhostscriptProcessor(versionInfo, false);
+                proc.StartProcessing(switches.ToArray(), null);
+
+                byte[] data = gsPipedOutput.Data;
+
+                output = Encoding.ASCII.GetString(data);
             }
-
-            switches.Add("-o" + outputPipeHandle);
-            switches.Add("-sDEVICE=inkcov");
-            switches.Add(path);
-
-            GhostscriptProcessor proc = new GhostscriptProcessor(versionInfo, false);
-            proc.StartProcessing(switches.ToArray(), null);
-
-            byte[] data = gsPipedOutput.Data;
-
-            gsPipedOutput.Dispose(); gsPipedOutput = null;
-
-            string output = Encoding.ASCII.GetString(data);
 
             if (output.Length > 0)
             {

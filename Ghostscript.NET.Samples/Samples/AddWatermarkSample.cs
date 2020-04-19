@@ -81,18 +81,18 @@ namespace Ghostscript.NET.Samples
             dev.GraphicsAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.TextAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.ResolutionXY = new GhostscriptImageDeviceResolution(96, 96);
-            dev.InputFiles.Add(@"E:\gss_test\indispensable.pdf");
+            dev.InputFiles.Add(@"..\..\..\test\indispensable.pdf");
             dev.Pdf.FirstPage = 2;
             dev.Pdf.LastPage = 4;
             dev.PostScript = POSTSCRIPT_APPEND_WATERMARK;
-            dev.OutputPath = @"E:\gss_test\output\indispensable_color_page_%03d.png";
+            dev.OutputPath = @"..\..\..\test\output\indispensable_color_page_%03d.png";
             dev.Process();
         }
 
         private void Add_Watermark_To_PDF_Document()
         {
-            string inputFile = @"E:\gss_test\test.pdf";
-            string outputFile = @"E:\gss_test\output\test-watermarked.pdf";
+            string inputFile = @"..\..\..\test\test.pdf";
+            string outputFile = @"..\..\..\test\output\test-watermarked.pdf";
 
             List<string> switches = new List<string>();
             switches.Add(string.Empty);

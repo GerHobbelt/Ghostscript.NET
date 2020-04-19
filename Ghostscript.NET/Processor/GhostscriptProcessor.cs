@@ -217,15 +217,6 @@ namespace Ghostscript.NET.Processor
 
         #endregion
 
-        #region Process - args
-
-        public void Process(string[] args)
-        {
-            this.Process(args, null);
-        }
-
-        #endregion
-
         #region Process - device, stdIO_callback
 
         public void Process(GhostscriptDevice device, GhostscriptStdIO stdIO_callback)
@@ -237,7 +228,7 @@ namespace Ghostscript.NET.Processor
 
         #region Process - args, stdIO_callback
 
-        public void Process(string[] args, GhostscriptStdIO stdIO_callback)
+        public void Process(string[] args, GhostscriptStdIO stdIO_callback = null)
         {
             this.StartProcessing(args, stdIO_callback);
         }
