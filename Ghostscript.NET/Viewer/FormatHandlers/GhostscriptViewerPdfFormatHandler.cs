@@ -82,22 +82,24 @@ namespace Ghostscript.NET.Viewer
                     /DSCPageCount 0 def
                 ");
 
+#if false // https://github.com/mgieseki/dvisvgm/commit/bc51951bc90b700c28ea018993bdb058e5271e9b by way of https://github.com/mgieseki/dvisvgm/issues/118 
             // open PDF support dictionaries
             this.Execute(@"
                     GS_PDF_ProcSet begin
                     pdfdict begin");
+#endif
         }
 
-        #endregion
+#endregion
 
-        #region Open
+#region Open
 
         public override void Open(string filePath)
         {
-            filePath = StringHelper.ToUtf8String(filePath);
+            filePath = StringHelper.ToUtf8String(filePath).Replace("\\", "/");
 
             // open PDF file
-            int res = this.Execute(string.Format("({0}) (r) file runpdfbegin", filePath.Replace("\\", "/")));
+            int res = this.Execute($"({filePath}) (r) file runpdfbegin");
 
             if(res == ierrors.e_ioerror)
             {
@@ -115,21 +117,25 @@ namespace Ghostscript.NET.Viewer
             this.Execute("process_trailer_attrs\n");
         }
 
-        #endregion
+#endregion
 
-        #region StdInput
+#region StdInput
 
         public override void StdInput(out string input, int count)
         {
             input = string.Empty;
         }
 
-        #endregion
+#endregion
 
-        #region StdOutput
+#region StdOutput
 
         public override void StdOutput(string message)
         {
+            if (message.Contains("RUN:\n"))
+            {
+                return; // skip debug msgs
+            }
             if (message.Contains(PDF_TAG))
             {
                 int startPos = message.IndexOf(PDF_TAG);
@@ -238,18 +244,18 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
+#endregion
 
-        #region StdError
+#region StdError
 
         public override void StdError(string message)
         {
 
         }
 
-        #endregion
+#endregion
 
-        #region InitPage
+#region InitPage
 
         public override void InitPage(int pageNumber)
         {
@@ -263,9 +269,9 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
+#endregion
 
-        #region ShowPage
+#region ShowPage
 
         public override void ShowPage(int pageNumber)
         {
@@ -279,7 +285,7 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
+#endregion
 
     }
 }

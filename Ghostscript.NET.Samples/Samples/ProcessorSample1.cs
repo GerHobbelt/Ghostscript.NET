@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using Ghostscript.NET.Processor;
 using System.IO;
 using System.Drawing;
+using System.Linq;
 
 namespace Ghostscript.NET.Samples
 {
@@ -36,31 +37,68 @@ namespace Ghostscript.NET.Samples
     {
         public void Start()
         {
-            string inputFile = @"E:\gss_test\test.pdf";
-            string outputFile = @"E:\gss_test\output\page-%03d.png";
+            string inputFile = @"..\..\..\test.pdf";
+            string outputFile = @"..\..\..\output\page-%04d.png";
 
-            int pageFrom = 1;
-            int pageTo = 50;
+            const int pageFrom = 1;
+            const int pageTo = 50;
+            const int dpi = 300;            // 96 for screen when you don't want zoom or OCR-viable render output
+            const bool highQualityAntiAliasedOutput = true;
 
             using (GhostscriptProcessor ghostscript = new GhostscriptProcessor())
             {
                 ghostscript.Processing += new GhostscriptProcessorProcessingEventHandler(ghostscript_Processing);
 
                 List<string> switches = new List<string>();
-                switches.Add("-empty");
+                //switches.Add("-empty");
                 switches.Add("-dSAFER");
                 switches.Add("-dBATCH");
                 switches.Add("-dNOPAUSE");
                 switches.Add("-dNOPROMPT");
-                switches.Add("-dFirstPage=" + pageFrom.ToString());
-                switches.Add("-dLastPage=" + pageTo.ToString());
-                switches.Add("-sDEVICE=png16m");
-                switches.Add("-r96");
-                switches.Add("-dTextAlphaBits=4");
-                switches.Add("-dGraphicsAlphaBits=4");
-                switches.Add(@"-sOutputFile=" + outputFile);
+                switches.Add($"-dFirstPage={pageFrom}");
+                switches.Add($"-dLastPage={pageTo}");
+                switches.Add($"-sPageList={pageFrom}-");            // overrides FirstPage and LastPage when used...
+                switches.Add("-sDEVICE=png16m");                    // PNG 24bit color output: https://ghostscript.com/doc/current/Devices.htm
+                switches.Add($"-r{dpi}");                              
+                switches.Add($"-dMaxBitmap={ /* assume A3+50% page size @ 4 bytes per pixel */ (int)(12 * 16 * dpi * dpi * 4 * 1.5) }");
+                if (highQualityAntiAliasedOutput)
+                {
+                    switches.Add("-dTextAlphaBits=4");                  // 4 = best quality: https://www.ghostscript.com/doc/9.52/Use.htm#Rendering_parameters
+                    switches.Add("-dGraphicsAlphaBits=4");
+                    switches.Add("-dAlignToPixels=0");
+                }
+                else
+                {
+                    switches.Add("-dTextAlphaBits=1");                  // 4 = best quality: https://www.ghostscript.com/doc/9.52/Use.htm#Rendering_parameters
+                    switches.Add("-dGraphicsAlphaBits=1");
+                    switches.Add("-dAlignToPixels=1");
+                }
+                switches.Add("-dPrinted=false");                    // always treat output device as a screen instead of as a printer for annotations display, etc.
+                switches.Add($"-sOutputFile={outputFile}");
+
+#if false  // doesn't work   :-(
+                // also report the page count as per https://stackoverflow.com/questions/4826485/ghostscript-pdf-total-pages :
+                switches.Add("-q");
+                switches.Add("-c");
+                // of course this spells trouble when the `outputFile` path itself contains double quotes   :-(
+                // Aalso you cannot feed this baby *relative* paths as the GhostScript DLL will consider its own location as directory '.':
+                string ap = Path.GetFullPath(inputFile).Replace("\\", "/");
+                switches.Add($"\"({ap}) (r) file runpdfbegin pdfpagecount =\"");
+#else
+                string ap = Path.GetFullPath(inputFile).Replace("\\", "/");
+#endif
+                switches.Add("-c");
+                switches.Add("30000000 setvmthreshold");
+
                 switches.Add(@"-f");
-                switches.Add(inputFile);
+                switches.Add(ap /* inputFile -- just to make sure both parts of the GS command point at exactly the same file */);
+
+                if (!File.Exists(ap))
+                {
+                    throw new ApplicationException($"input file does not exist: {inputFile}{ (inputFile != ap ? $" --> {ap}" : "") }");
+                }
+
+                Console.WriteLine("CMD: {0}", String.Join(" ", switches.ToArray()));
 
                 ghostscript.Process(switches.ToArray());
             }
@@ -68,7 +106,7 @@ namespace Ghostscript.NET.Samples
 
         void ghostscript_Processing(object sender, GhostscriptProcessorProcessingEventArgs e)
         {
-            Console.WriteLine(e.CurrentPage.ToString() + " / " + e.CurrentPage.ToString());
+            Console.WriteLine($"{e.CurrentPage} / { (e.TotalPages == 0 ? @"<unknown>" : e.TotalPages.ToString()) }");
         }
 
         private void Start2()

@@ -364,7 +364,7 @@ namespace Ghostscript.NET.Viewer
             _interpreter.Setup(new GhostscriptViewerStdIOHandler(this, _formatHandler), new GhostscriptViewerDisplayHandler(this));
 
             List<string> args = new List<string>();
-            args.Add("-gsnet");
+            //args.Add("-gsnet");
             args.Add("-sDEVICE=display");
 
             if (Environment.Is64BitProcess)
@@ -383,18 +383,26 @@ namespace Ghostscript.NET.Viewer
                         (int)DISPLAY_FORMAT_ENDIAN.DISPLAY_LITTLEENDIAN |
                         (int)DISPLAY_FORMAT_FIRSTROW.DISPLAY_BOTTOMFIRST).ToString());
 
+            args.Add("-dInterpolateControl=1");
+            args.Add("-dTextAlphaBits=4");
+            args.Add("-dGraphicsAlphaBits=4");
+            args.Add("-dGridFitTT=2");              // was 0, but use font hinting; https://www.ghostscript.com/doc/9.52/Language.htm#GridFitTT
 
-
-            args.Add("-dDOINTERPOLATE");
-            args.Add("-dGridFitTT=0");
+            string basedir = Path.GetDirectoryName(_filePath).Replace("\\", "/");
+            args.Add($"--permit-file-all={ basedir }");
 
             // fixes bug: http://bugs.ghostscript.com/show_bug.cgi?id=695180
-            if (_interpreter.LibraryRevision > 910)
+            if (_interpreter.LibraryRevision > 910 && _interpreter.LibraryRevision <= 921)
             {
                 args.Add("-dMaxBitmap=1g");
             }
+            else 
+            {
+                // assume a 4K screen+50%
+                args.Add($"-dMaxBitmap={ (int)(4096 * 2160 * 4 * 1.5) }");
+            }
 
-            foreach(string customSwitch in _customSwitches)
+            foreach (string customSwitch in _customSwitches)
             {
                 args.Add(customSwitch);
             }

@@ -35,7 +35,7 @@ namespace Ghostscript.NET.Processor
     {
         #region Private constants
 
-        private readonly char[] EMPTY_SPACE_SPLIT = new char[] { ' ' };
+        private readonly char[] EMPTY_SPACE_SPLIT = new char[] { ' ', '-' };
 
         #endregion
 
@@ -340,23 +340,34 @@ namespace Ghostscript.NET.Processor
                         throw new GhostscriptAPICallException("gsapi_init_with_args", rc_init);
                     }
                 }
-
-                int rc_exit = _gs.gsapi_exit(instance);
-
-                if (ierrors.IsErrorIgnoreQuit(rc_exit))
-                {
-                    throw new GhostscriptAPICallException("gsapi_exit", rc_exit);
-                }
             }
             finally
             {
-                _gs.gsapi_delete_instance(instance);
+                // gsapi_exit() :
+                // 
+                // Exit the interpreter. This MUST be called on shutdown if gsapi_init_with_args() has been called, and just before gsapi_delete_instance().
+                //
+                // ^^^ that's from the docs at https://ghostscript.com/doc/9.52/API.htm#exit (emphasis mine): it's placed in the `finally` clause
+                // section here to ensure it is called when rc_init == e_Fatal (or other error) occurs and throws an exception in the code chunk above.
+                try
+                {
+                    int rc_exit = _gs.gsapi_exit(instance);
 
-                GC.Collect();
+                    if (ierrors.IsErrorIgnoreQuit(rc_exit))
+                    {
+                        throw new GhostscriptAPICallException("gsapi_exit", rc_exit);
+                    }
+                }
+                finally
+                {
+                    _gs.gsapi_delete_instance(instance);
 
-                _isRunning = false;
+                    GC.Collect();
 
-                this.OnCompleted(new GhostscriptProcessorEventArgs());
+                    _isRunning = false;
+
+                    this.OnCompleted(new GhostscriptProcessorEventArgs());
+                }
             }
         }
 
@@ -465,10 +476,13 @@ namespace Ghostscript.NET.Processor
 
         private void ProcessOutputLine(string line)
         {
+            // e.g. "Processing pages 1-50."
+            // e.g. "Processing pages 1-."    (when having specified a PageList like "1-")
             if (line.StartsWith("Processing pages"))
             {
                 string[] chunks = line.Split(EMPTY_SPACE_SPLIT);
-                _totalPages = int.Parse(chunks[chunks.Length - 1].TrimEnd('.'));
+                string lastPage = chunks[chunks.Length - 1].TrimEnd('.');
+                int.TryParse(lastPage, out _totalPages);
             }
             else if (line.StartsWith("Page"))
             {

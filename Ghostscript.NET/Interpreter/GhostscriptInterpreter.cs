@@ -313,6 +313,8 @@ namespace Ghostscript.NET.Interpreter
             {
                 int exit_code;
 
+                _stdIO.StdOut($"\nRUN:\n{str}\n");
+
                 // check if the string we are trying to run doesn't exceed max length for the 'run_string' function
                 if (str.Length < RUN_STRING_MAX_LENGTH)
                 {
