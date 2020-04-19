@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Ghostscript.NET.Processor;
 
 namespace Ghostscript.NET.Samples
@@ -34,8 +35,10 @@ namespace Ghostscript.NET.Samples
     {
         public void Start()
         {
-            string inputFile = @"..\..\..\test\test.pdf";
-            string outputFile = @"..\..\..\test\output\page-%03d.png";
+            string inputFile = Path.GetFullPath(@"../../../test/test.pdf").Replace("\\", "/");
+            string outputFile = Path.GetFullPath(@"../../../test/output/page-%03d.png").Replace("\\", "/");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
 
             int pageFrom = 1;
             int pageTo = 50;

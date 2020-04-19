@@ -30,10 +30,11 @@ namespace Ghostscript.NET
 {
     public class GhostscriptException : Exception
     {
-        private int _code = -1000;
+        private int _code = ierrors.e_UnspecifiedError;
 
         public GhostscriptException(string message) : base(message)
-        { }
+        {
+        }
 
         public GhostscriptException(string message, int code) : base(message)
         {
@@ -49,11 +50,6 @@ namespace Ghostscript.NET
         {
             get 
             {
-                if (_code <= -1000)
-                {
-                    return string.Empty;
-                }
-
                 return ierrors.GetErrorName(_code);
             }
         }

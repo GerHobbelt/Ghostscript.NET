@@ -101,25 +101,34 @@ namespace Ghostscript.NET.Viewer
             // open PDF file
             int res = this.Execute($"({filePath}) (r) file runpdfbegin");
 
-            if(res == ierrors.e_ioerror)
+            Func<int> chk = () =>
             {
-                throw new GhostscriptException("IO error for file: '" + filePath + "'", ierrors.e_ioerror);
-            }
+                if (ierrors.IsError(res))
+                {
+                    throw new GhostscriptException($"{ ierrors.GetErrorName(res) ?? $"code {res}" } for file: '{ filePath }'", res);
+                }
+                return res;
+            };
+            chk();
 
-            this.Execute("/FirstPage where { pop FirstPage } { 1 } ifelse");
-            this.Execute("/LastPage where { pop LastPage } { pdfpagecount } ifelse");
+            res = this.Execute("/FirstPage where { pop FirstPage } { 1 } ifelse");
+            chk();
+            res = this.Execute("/LastPage where { pop LastPage } { pdfpagecount } ifelse");
+            chk();
 
             // flush stdout and then send PDF page marker to stdout where we capture the page numbers via callback
-            this.Execute(string.Format("flush ({0}) print exch =only ( ) print =only (\n) print flush", PDF_PAGES_TAG));
+            res = this.Execute(string.Format("flush ({0}) print exch =only ( ) print =only (\n) print flush", PDF_PAGES_TAG));
+            chk();
 
             // fixes problem with the invisible layers
             // if we don't run that code, then optional content groups will be left unmarked and always processed
-            this.Execute("process_trailer_attrs\n");
+            res = this.Execute("process_trailer_attrs\n");
+            chk();
         }
 
-#endregion
+        #endregion
 
-#region StdInput
+        #region StdInput
 
         public override void StdInput(out string input, int count)
         {
@@ -265,7 +274,7 @@ namespace Ghostscript.NET.Viewer
             }
             else
             {
-                throw new GhostscriptException("Page number is not in pages number range!");
+                throw new ArgumentOutOfRangeException("Page number is not in pages number range!");
             }
         }
 
@@ -281,7 +290,7 @@ namespace Ghostscript.NET.Viewer
             }
             else
             {
-                throw new GhostscriptException("Page number is not in pages number range!");
+                throw new ArgumentOutOfRangeException("Page number is not in pages number range!");
             }
         }
 

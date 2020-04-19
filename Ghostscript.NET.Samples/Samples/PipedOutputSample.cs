@@ -42,7 +42,7 @@ namespace Ghostscript.NET.Samples
     {
         public void Start()
         {
-            string inputFile = @"..\..\..\test\test_postscript.ps";
+            string inputFile = @"..\..\..\test\gre.pdf";
 
             GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
 

@@ -59,12 +59,22 @@ namespace Ghostscript.NET
         /// <summary>
         /// Returns error name.
         /// </summary>
-        /// <param name="returnCode">Return code from the Ghostscript.</param>
+        /// <param name="returnCode">Return code from the Ghostscript. NULL if the code is unknown.</param>
         /// <returns>Error name.</returns>
         public static string GetErrorName(int code)
         {
-            int errorNameIndex = ~code + 1;
-            return ERROR_NAMES[errorNameIndex];
+            int errorNameIndex = -code;
+            switch (errorNameIndex)
+            {
+                case -e_UnspecifiedError:
+                    return "unspecified error";
+
+                case -e_LibraryNotInstalled:
+                    return "library not installed";
+
+                default:
+                    return (errorNameIndex >= 0 && errorNameIndex < ERROR_NAMES.Count) ? ERROR_NAMES[errorNameIndex] : null;
+            }
         }
     }
 }

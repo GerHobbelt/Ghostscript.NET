@@ -51,11 +51,11 @@ namespace Ghostscript.NET.Samples
             dev.GraphicsAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.TextAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.ResolutionXY = new GhostscriptImageDeviceResolution(96, 96);
-            dev.InputFiles.Add(@"..\..\..\test\indispensable.pdf");
+            dev.InputFiles.Add(@"..\..\..\test\t2.pdf");
             dev.Pdf.FirstPage = 2;
             dev.Pdf.LastPage = 4;
             dev.CustomSwitches.Add("-dDOINTERPOLATE");
-            dev.OutputPath = @"..\..\..\test\output\indispensable_color_page_%03d.png";
+            dev.OutputPath = @"..\..\..\test\output\t2_color_page_%03d.png";
             dev.Process();
         }
 
@@ -65,10 +65,10 @@ namespace Ghostscript.NET.Samples
             dev.GraphicsAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.TextAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.ResolutionXY = new GhostscriptImageDeviceResolution(96, 96);
-            dev.InputFiles.Add(@"..\..\..\test\indispensable.pdf");
+            dev.InputFiles.Add(@"..\..\..\test\t2.pdf");
             dev.Pdf.FirstPage = 2;
             dev.Pdf.LastPage = 4;
-            dev.OutputPath = @"..\..\..\test\output\indispensable_gray_page_%03d.png";
+            dev.OutputPath = @"..\..\..\test\output\t2_gray_page_%03d.png";
             dev.Process();
         }
 
@@ -79,10 +79,10 @@ namespace Ghostscript.NET.Samples
             dev.TextAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.ResolutionXY = new GhostscriptImageDeviceResolution(96, 96);
             dev.JpegQuality = 80;
-            dev.InputFiles.Add(@"..\..\..\test\indispensable.pdf");
+            dev.InputFiles.Add(@"..\..\..\test\t2.pdf");
             dev.Pdf.FirstPage = 2;
             dev.Pdf.LastPage = 4;
-            dev.OutputPath = @"..\..\..\test\output\indispensable_color_page_%03d.jpeg";
+            dev.OutputPath = @"..\..\..\test\output\t2_color_page_%03d.jpeg";
             dev.Process();
         }
 
@@ -93,10 +93,10 @@ namespace Ghostscript.NET.Samples
             dev.TextAlphaBits = GhostscriptImageDeviceAlphaBits.V_4;
             dev.ResolutionXY = new GhostscriptImageDeviceResolution(96, 96);
             dev.JpegQuality = 80;
-            dev.InputFiles.Add(@"..\..\..\test\indispensable.pdf");
+            dev.InputFiles.Add(@"..\..\..\test\t2.pdf");
             dev.Pdf.FirstPage = 2;
             dev.Pdf.LastPage = 4;
-            dev.OutputPath = @"..\..\..\test\output\indispensable_gray_page_%03d.jpeg";
+            dev.OutputPath = @"..\..\..\test\output\t2_gray_page_%03d.jpeg";
             dev.Process();
         }
     }

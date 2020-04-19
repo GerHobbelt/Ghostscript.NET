@@ -48,8 +48,8 @@ namespace Ghostscript.NET.Samples
             int desired_x_dpi = 300;
             int desired_y_dpi = 300;
 
-            string inputPdfPath = @"E:\__test_data\test2.pdf";
-            string outputPath = @"E:\__test_data\output\";
+            string inputPdfPath = @"..\..\..\test\fax.pdf";
+            string outputPath = @"..\..\..\test\output\";
 
             using (GhostscriptRasterizer rasterizer = new GhostscriptRasterizer())
             {

@@ -379,6 +379,13 @@ namespace Ghostscript.NET.Interpreter
         /// </summary>
         public void RunFile(string path)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Couldn't find input file.", path);

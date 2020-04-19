@@ -47,82 +47,93 @@ namespace Ghostscript.NET.Samples
 
             for (choice = 1; ; choice++)
             {
-                switch (choice)
+                try
                 {
-                    case 1:
-                        sample = new GetInkCoverageSample();
-                        break;
+                    switch (choice)
+                    {
+                        case 1:
+                            sample = new GetInkCoverageSample();
+                            break;
 
-                    case 2:
-                        sample = new ProcessorSample1();
-                        break;
+                        case 2:
+                            sample = new ProcessorSample1();
+                            break;
 
-                    case 3:
-                        sample = new ProcessorSample2();
-                        break;
+                        case 3:
+                            sample = new ProcessorSample2();
+                            break;
 
-                    case 4:
-                        sample = new FindInstalledGhostscriptVersionsSample();
-                        break;
+                        case 4:
+                            sample = new FindInstalledGhostscriptVersionsSample();
+                            break;
 
-                    case 5:
-                        sample = new RunMultipleInstancesSample();
-                        break;
+                        case 5:
+                            sample = new RunMultipleInstancesSample();
+                            break;
 
-                    case 6:
-                        sample = new ViewerSample();
-                        break;
+                        case 6:
+                            sample = new ViewerSample();
+                            break;
 
-                    case 7:
-                        sample = new RasterizerSample1();
-                        break;
+                        case 7:
+                            sample = new RasterizerSample1();
+                            break;
 
-                    case 8:
-                        sample = new RasterizerSample2();
-                        break;
+                        case 8:
+                            sample = new RasterizerSample2();
+                            break;
 
-                    case 9:
-                        sample = new AddWatermarkSample();
-                        break;
+                        case 9:
+                            sample = new AddWatermarkSample();
+                            break;
 
-                    case 10:
-                        sample = new DeviceUsageSample();
-                        break;
+                        case 10:
+                            sample = new DeviceUsageSample();
+                            break;
 
-                    case 11:
-                        sample = new PipedOutputSample();
-                        break;
+                        case 11:
+                            sample = new PipedOutputSample();
+                            break;
 
-                    case 12:
-                        sample = new SendToPrinterSample();
-                        break;
+                        case 12:
+                            sample = new SendToPrinterSample();
+                            break;
 
-                    case 13:
-                        sample = new RasterizerCropSample();
-                        break;
+                        case 13:
+                            sample = new RasterizerCropSample();
+                            break;
 
-                    case 14:
-                        sample = new ProcessorSample3();
-                        break;
+                        case 14:
+                            sample = new ProcessorSample3();
+                            break;
 
-                    case 15:
-                        sample = new ProcessorSample4();
-                        break;
+                        case 15:
+                            sample = new ProcessorSample4();
+                            break;
 
-                    default:
-                        sample = null;
+                        default:
+                            sample = null;
+                            break;
+                    }
+
+                    if (sample == null)
+                    {
                         break;
+                    }
+
+                    sample.Start();
+                }
+                catch (GhostscriptException ex)
+                {
+                    Console.WriteLine($"Sample {choice}: GhostScript Error {ex.Code} ({ex.CodeName ?? "<unknown>"}) --> Exception: {ex}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Sample {choice}: Exception: {ex}");
                 }
 
-                if (sample == null)
-                {
-                    break;
-                }
-
-                sample.Start();
+                Console.ReadLine();
             }
-
-            Console.ReadLine();
         }
     }
 }

@@ -152,6 +152,13 @@ namespace Ghostscript.NET.Rasterizer
 
         public void Open(string path)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Could not find input file.", path);
@@ -188,6 +195,13 @@ namespace Ghostscript.NET.Rasterizer
 
         public void Open(string path, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Could not find input file.", path);
@@ -232,6 +246,13 @@ namespace Ghostscript.NET.Rasterizer
 
         public void Open(string path, byte[] library)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Couldn't find input file.", path);

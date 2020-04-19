@@ -37,7 +37,7 @@ namespace Ghostscript.NET.Samples
             // YOU NEED TO HAVE ADMINISTRATOR RIGHTS TO RUN THIS CODE
 
             string printerName = "YourPrinterName";
-            string inputFile = @"E:\__test_data\test.pdf";
+            string inputFile = @"..\..\..\test\t3.pdf";
 
             using (GhostscriptProcessor processor = new GhostscriptProcessor())
             {

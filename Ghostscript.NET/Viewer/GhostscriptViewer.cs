@@ -182,6 +182,13 @@ namespace Ghostscript.NET.Viewer
 
         public void Open(string path)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Could not find input file.", path);
@@ -219,6 +226,13 @@ namespace Ghostscript.NET.Viewer
 
         public void Open(string path, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Could not find input file.", path);
@@ -262,6 +276,13 @@ namespace Ghostscript.NET.Viewer
 
         public void Open(string path, byte[] library)
         {
+            if (String.IsNullOrWhiteSpace(path))
+            {
+                throw new FileNotFoundException("Input file is NULL.", path);
+            }
+
+            path = Path.GetFullPath(path).Replace("\\", "/");
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException("Could not find input file.", path);
@@ -327,13 +348,18 @@ namespace Ghostscript.NET.Viewer
 
         private void Open()
         {
-            string extension = Path.GetExtension(_filePath).ToLower();
+            string extension = "";
 
-            if (!string.IsNullOrWhiteSpace(_filePath) && string.IsNullOrWhiteSpace(extension))
+            if (!String.IsNullOrEmpty(_filePath))
             {
-                using (FileStream srm = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                extension = Path.GetExtension(_filePath).ToLower();
+
+                if (!string.IsNullOrWhiteSpace(_filePath) && string.IsNullOrWhiteSpace(extension))
                 {
-                    extension = StreamHelper.GetStreamExtension(srm);
+                    using (FileStream srm = new FileStream(_filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        extension = StreamHelper.GetStreamExtension(srm);
+                    }
                 }
             }
 

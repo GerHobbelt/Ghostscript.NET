@@ -39,11 +39,23 @@ namespace Ghostscript.NET
             ERROR_NAMES.AddRange(LEVEL1_ERROR_NAMES);
             ERROR_NAMES.AddRange(LEVEL2_ERROR_NAMES);
             ERROR_NAMES.AddRange(DPS_ERROR_NAMES);
-        }
+            for (int i = ERROR_NAMES.Count; i <= -e_Info; i++)
+            {
+                ERROR_NAMES.Add(null);
+            }
+            ERROR_NAMES[-e_Fatal] = "fatal";
+            ERROR_NAMES[-e_Quit] = "quit";
+            ERROR_NAMES[-e_InterpreterExit] = "interpreter exit";
+            ERROR_NAMES[-e_RemapColor] = "remap color";
+            ERROR_NAMES[-e_ExecStackUnderflow] = "exec stack underflow";
+            ERROR_NAMES[-e_VMreclaim] = "VM reclaim";
+            ERROR_NAMES[-e_NeedInput] = "need input";
+            ERROR_NAMES[-e_Info] = "info";
+    }
 
-        // PostScript Level 1 errors
+    // PostScript Level 1 errors
 
-        public const int e_unknownerror = -1;	/* unknown error */
+    public const int e_unknownerror = -1;	/* unknown error */
         public const int e_dictfull = -2;
         public const int e_dictstackoverflow = -3;
         public const int e_dictstackunderflow = -4;
@@ -70,12 +82,12 @@ namespace Ghostscript.NET
         public const int e_VMerror = -25;		/* must be the last Level 1 error */
 
         public static string[] LEVEL1_ERROR_NAMES = {
-                 "unknownerror", "dictfull", "dictstackoverflow", "dictstackunderflow",
-                 "execstackoverflow", "interrupt", "invalidaccess", "invalidexit",
-                 "invalidfileaccess", "invalidfont", "invalidrestore", "ioerror",
-                 "limitcheck", "nocurrentpoint", "rangecheck", "stackoverflow",
-                 "stackunderflow", "syntaxerror", "timeout", "typecheck", "undefined",
-                 "undefinedfilename", "undefinedresult", "unmatchedmark", "VMerror" };
+                 "unknown error", "dictfull", "dict stack overflow", "dict stack underflow",
+                 "exec stack overflow", "interrupt", "invalid access", "invalid exit",
+                 "invalid file access", "invalid font", "invalid restore", "I/O error",
+                 "limit check", "no current point", "range check", "stack overflow",
+                 "stack underflow", "syntax error", "timeout", "typecheck", "undefined",
+                 "undefined filename", "undefined result", "unmatched mark", "VM error" };
 
 
         // Additional Level 2 errors (also in DPS)
@@ -84,7 +96,7 @@ namespace Ghostscript.NET
         public const int e_undefinedresource = -27;
         public const int e_unregistered = -28;
 
-        public static string[] LEVEL2_ERROR_NAMES = { "configurationerror", "undefinedresource", "unregistered" };
+        public static string[] LEVEL2_ERROR_NAMES = { "configuration error", "undefined resource", "unregistered" };
 
         // Additional DPS errors
 
@@ -94,7 +106,7 @@ namespace Ghostscript.NET
         
         public const int e_invalidid = -30;
 
-        public static string[] DPS_ERROR_NAMES = { "invalidcontext", "invalidid" };
+        public static string[] DPS_ERROR_NAMES = { "invalid context", "invalid id" };
 
         public static List<string> ERROR_NAMES = new List<string>();
 
@@ -153,5 +165,7 @@ namespace Ghostscript.NET
         /// </summary>
         public const int e_Info = -110;
 
+        public const int e_UnspecifiedError = -1000;
+        public const int e_LibraryNotInstalled = -1001;
     }
 }

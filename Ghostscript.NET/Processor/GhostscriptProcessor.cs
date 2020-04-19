@@ -208,18 +208,9 @@ namespace Ghostscript.NET.Processor
 
         #endregion
 
-        #region Process - device
-
-        public void Process(GhostscriptDevice device)
-        {
-            this.Process(device, null);
-        }
-
-        #endregion
-
         #region Process - device, stdIO_callback
 
-        public void Process(GhostscriptDevice device, GhostscriptStdIO stdIO_callback)
+        public void Process(GhostscriptDevice device, GhostscriptStdIO stdIO_callback = null)
         {
             this.StartProcessing(device, stdIO_callback);
         }
@@ -237,7 +228,7 @@ namespace Ghostscript.NET.Processor
 
         #region StartProcessing - device, stdIO_callback
 
-        public void StartProcessing(GhostscriptDevice device, GhostscriptStdIO stdIO_callback)
+        public void StartProcessing(GhostscriptDevice device, GhostscriptStdIO stdIO_callback = null)
         {
             if (device == null)
             {
@@ -256,7 +247,7 @@ namespace Ghostscript.NET.Processor
         /// </summary>
         /// <param name="args">Command arguments</param>
         /// <param name="stdIO_callback">StdIO callback, can be set to null if you dont want to handle it.</param>
-        public void StartProcessing(string[] args, GhostscriptStdIO stdIO_callback)
+        public void StartProcessing(string[] args, GhostscriptStdIO stdIO_callback = null)
         {
             if (args == null)
             {

@@ -37,8 +37,10 @@ namespace Ghostscript.NET.Samples
     {
         public void Start()
         {
-            string inputFile = @"../../../test/test.pdf";
-            string outputFile = @"../../../test/output/test-t2.tiff";
+            string inputFile = Path.GetFullPath(@"../../../test/test.pdf").Replace("\\", "/");
+            string outputFile = Path.GetFullPath(@"../../../test/output/test-t2.tiff").Replace("\\", "/");
+
+            Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
 
             GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
 

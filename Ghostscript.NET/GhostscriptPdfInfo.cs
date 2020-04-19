@@ -200,7 +200,7 @@ namespace Ghostscript.NET
                 string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
 
                 List<string> switches = new List<string>();
-                switches.Add("-empty");
+                //switches.Add("-empty");
                 switches.Add("-q");
 
                 if (firstPage != 0 && lastPage != 0)
@@ -214,7 +214,7 @@ namespace Ghostscript.NET
                 switches.Add(path);
 
                 GhostscriptProcessor proc = new GhostscriptProcessor(versionInfo, false);
-                proc.StartProcessing(switches.ToArray(), null);
+                proc.StartProcessing(switches.ToArray());
 
                 byte[] data = gsPipedOutput.Data;
 
