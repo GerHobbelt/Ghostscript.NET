@@ -34,9 +34,6 @@ namespace Ghostscript.NET.Viewer
 {
     internal class GhostscriptViewerDisplayHandler : GhostscriptDisplayDeviceHandler
     {
-
-        #region Private variables
-
         private GhostscriptViewer _viewer;
         private GhostscriptViewerImage _destImage;
         private IntPtr _srcImage;
@@ -45,36 +42,20 @@ namespace Ghostscript.NET.Viewer
         private long _lastUpdateTime = Environment.TickCount;
         private bool _synchTriggered = false;
 
-        #endregion
-
-        #region GhostscriptViewerDisplayHandler
-
         public GhostscriptViewerDisplayHandler(GhostscriptViewer viewer)
         {
             _viewer = viewer;
         }
-
-        #endregion
-
-        #region Open
 
         public override int Open(IntPtr handle, IntPtr device)
         {
             return 0;
         }
 
-        #endregion
-
-        #region Preclose
-
         public override int Preclose(IntPtr handle, IntPtr device)
         {
             return 0;
         }
-
-        #endregion
-
-        #region Close
 
         public override int Close(IntPtr handle, IntPtr device)
         {
@@ -85,10 +66,6 @@ namespace Ghostscript.NET.Viewer
 
             return 0;
         }
-
-        #endregion
-
-        #region Presize
 
         public override int Presize(IntPtr handle, IntPtr device, int width, int height, int raster, uint format)
         {
@@ -103,10 +80,6 @@ namespace Ghostscript.NET.Viewer
 
             return 0;
         }
-
-        #endregion
-
-        #region Size
 
         public override int Size(IntPtr handle, IntPtr device, int width, int height, int raster, uint format, IntPtr pimage)
         {
@@ -128,20 +101,12 @@ namespace Ghostscript.NET.Viewer
             return 0;
         }
 
-        #endregion
-
-        #region Sync
-
         public override int Sync(IntPtr handle, IntPtr device)
         {
             _synchTriggered = true;
 
             return 0;
         }
-
-        #endregion
-
-        #region Page
 
         public override int Page(IntPtr handle, IntPtr device, int copies, int flush)
         {
@@ -167,10 +132,6 @@ namespace Ghostscript.NET.Viewer
 
             return 0;
         }
-
-        #endregion
-
-        #region Update
 
         public override int Update(IntPtr handle, IntPtr device, int x, int y, int w, int h)
         {
@@ -224,8 +185,5 @@ namespace Ghostscript.NET.Viewer
 
             return 0;
         }
-
-        #endregion
-
     }
 }

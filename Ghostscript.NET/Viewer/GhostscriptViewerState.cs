@@ -30,28 +30,19 @@ namespace Ghostscript.NET.Viewer
 {
     public class GhostscriptViewerState
     {
-        #region XDpi
 
         internal int XDpi { get; set; }
 
-        #endregion
 
-        #region YDpi
 
         internal int YDpi { get; set; }
-        
-        #endregion
 
-        #region CurrentPage
+
 
         internal int CurrentPage { get; set; }
 
-        #endregion
 
-        #region ProgressiveUpdate
 
         internal bool ProgressiveUpdate { get; set; }
-
-        #endregion
     }
 }

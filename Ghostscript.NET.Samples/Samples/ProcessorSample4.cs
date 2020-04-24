@@ -104,7 +104,7 @@ namespace Ghostscript.NET.Samples
         private StringBuilder _outputMessages = new StringBuilder();
         private StringBuilder _errorMessages = new StringBuilder();
 
-        public GhostscriptViewerStdIOHandler() : base(true, true, true)
+        internal GhostscriptViewerStdIOHandler() : base(true, true, true)
         {
         }
 

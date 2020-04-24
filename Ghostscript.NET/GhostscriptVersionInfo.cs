@@ -35,17 +35,10 @@ namespace Ghostscript.NET
     /// </summary>
     public class GhostscriptVersionInfo
     {
-
-        #region Private local variables
-
         private Version _version;
         private string _dllPath;
         private string _libPath;
         private GhostscriptLicense _licenseType;
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptVersionInfo class.
@@ -62,7 +55,6 @@ namespace Ghostscript.NET
             _licenseType = licenseType;
         }
 
-        #endregion
 
         public GhostscriptVersionInfo(string customDllPath)
         {
@@ -72,8 +64,6 @@ namespace Ghostscript.NET
             _licenseType = GhostscriptLicense.GPL;
         }
 
-        #region Version
-
         /// <summary>
         /// Gets Ghostscript version.
         /// </summary>
@@ -81,10 +71,6 @@ namespace Ghostscript.NET
         {
             get { return _version; }
         }
-
-        #endregion
-
-        #region DllPath
 
         /// <summary>
         /// Gets Ghostscript native library path.
@@ -94,10 +80,6 @@ namespace Ghostscript.NET
             get { return _dllPath; }
         }
 
-        #endregion
-
-        #region LibPath
-
         /// <summary>
         /// Gets Ghostscrip lib path.
         /// </summary>
@@ -105,10 +87,6 @@ namespace Ghostscript.NET
         {
             get { return _libPath; }
         }
-
-        #endregion
-
-        #region LicenseType
 
         /// <summary>
         /// Gets Ghostscript license type.
@@ -118,10 +96,6 @@ namespace Ghostscript.NET
             get { return _licenseType; }
         }
 
-        #endregion
-
-        #region ToString
-
         /// <summary>
         /// Returns GhostscriptVersionInfo string.
         /// </summary>
@@ -130,10 +104,6 @@ namespace Ghostscript.NET
             return string.Format("Licence: {0}, Version: {1}, Dll: {2}, Lib: {3}", _licenseType, _version, _dllPath, _libPath);
         }
 
-        #endregion
-
-        #region GetInstalledVersions
-
         /// <summary>
         /// Gets installed Ghostscript versions list.
         /// </summary>
@@ -141,10 +111,6 @@ namespace Ghostscript.NET
         {
             return GetInstalledVersions(GhostscriptLicense.GPL | GhostscriptLicense.AFPL | GhostscriptLicense.Artifex);
         }
-
-        #endregion
-
-        #region GetInstalledVersions
 
         /// <summary>
         /// Gets installed Ghostscript versions list.
@@ -263,10 +229,6 @@ namespace Ghostscript.NET
             return versions;
         }
 
-        #endregion
-
-        #region GetLastInstalledVersion
-
         /// <summary>
         /// Gets top installed Ghostscript version.
         /// </summary>
@@ -274,10 +236,6 @@ namespace Ghostscript.NET
         {
             return GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL | GhostscriptLicense.Artifex, GhostscriptLicense.GPL);
         }
-
-        #endregion
-
-        #region GetLastInstalledVersion
 
         /// <summary>
         /// Gets top installed Ghostscript version.
@@ -331,10 +289,6 @@ namespace Ghostscript.NET
             throw new GhostscriptLibraryNotInstalledException();
         }
 
-        #endregion
-
-        #region IsGhostscriptInstalled
-
         /// <summary>
         /// Gets if the Ghostscript is installed on the local system.
         /// </summary>
@@ -346,8 +300,5 @@ namespace Ghostscript.NET
                 return GetInstalledVersions(GhostscriptLicense.GPL | GhostscriptLicense.AFPL | GhostscriptLicense.Artifex).Count > 0;
             }
         }
-
-        #endregion
-
     }
 }

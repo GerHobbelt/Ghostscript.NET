@@ -45,22 +45,15 @@ namespace Microsoft.WinAny.Interop
     /// </summary>
     public unsafe class DynamicNativeLibrary : IDisposable
     {
-
-        #region Private variables
-
-        private IntPtr  _loadedModuleHandle;
-        private bool    _loadedFromMemory;
-        private bool    _disposed = false;
+        private IntPtr _loadedModuleHandle;
+        private bool _loadedFromMemory;
+        private bool _disposed = false;
 
         private uint[,,] _protectionFlags = new uint[2, 2, 2]
                     {
-                        { /* not executable */ {WinNT.PAGE_NOACCESS, WinNT.PAGE_WRITECOPY}, {WinNT.PAGE_READONLY, WinNT.PAGE_READWRITE}, }, 
+                        { /* not executable */ {WinNT.PAGE_NOACCESS, WinNT.PAGE_WRITECOPY}, {WinNT.PAGE_READONLY, WinNT.PAGE_READWRITE}, },
                         { /* executable */ {WinNT.PAGE_EXECUTE, WinNT.PAGE_EXECUTE_WRITECOPY}, {WinNT.PAGE_EXECUTE_READ, WinNT.PAGE_EXECUTE_READWRITE}, },
                     };
-
-        #endregion
-
-        #region Constructor - fileName
 
         /// <summary>
         /// Initializes a new instance of the NativeLibrary class from a native module stored on disk.
@@ -76,10 +69,6 @@ namespace Microsoft.WinAny.Interop
             _loadedFromMemory = false;
         }
 
-        #endregion
-
-        #region Constructor - buffer
-
         /// <summary>
         /// Initializes a new instance of the NativeLibrary class from a native module byte array.
         /// </summary>
@@ -94,30 +83,16 @@ namespace Microsoft.WinAny.Interop
             _loadedFromMemory = true;
         }
 
-        #endregion
-
-        #region Destructor
-
         ~DynamicNativeLibrary()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -145,12 +120,6 @@ namespace Microsoft.WinAny.Interop
                 _disposed = true;
             }
         }
-
-        #endregion
-
-        #endregion
-
-        #region MemoryLoadLibrary
 
         /// <summary>
         /// Loads the specified native module from a byte array into the address space of the calling process.
@@ -231,7 +200,7 @@ namespace Microsoft.WinAny.Interop
 
                 // copy PE header to code
                 memory.memcpy((byte*)headers, (byte*)dos_header, dos_header->e_lfanew + old_header_oh_sizeOfHeaders);
-               
+
                 memory_module->headers = &((byte*)(headers))[dos_header->e_lfanew];
 
                 if (Environment.Is64BitProcess)
@@ -268,15 +237,11 @@ namespace Microsoft.WinAny.Interop
 
                 return (IntPtr)memory_module;
 
-            error:
+error:
                 MemoryFreeLibrary((IntPtr)memory_module);
                 return IntPtr.Zero;
             }
         }
-
-        #endregion
-
-        #region CopySections
 
         /// <summary>
         /// Copies sections from a native module file block to the new memory location.
@@ -334,10 +299,6 @@ namespace Microsoft.WinAny.Interop
             }
         }
 
-        #endregion
-
-        #region PerformBaseRelocation
-
         /// <summary>
         /// Adjusts base address of the imported data.
         /// </summary>
@@ -355,7 +316,7 @@ namespace Microsoft.WinAny.Interop
 
                 int index;
 
-                for (; relocation->VirtualAddress > 0; )
+                for (; relocation->VirtualAddress > 0;)
                 {
                     byte* dest = (byte*)(memory_module->codeBase + relocation->VirtualAddress);
                     ushort* relInfo = (ushort*)((byte*)relocation + sizeOfBaseRelocation);
@@ -398,10 +359,6 @@ namespace Microsoft.WinAny.Interop
                 }
             }
         }
-
-        #endregion
-
-        #region BuildImportTable
 
         /// <summary>
         /// Loads required dlls and adjust function table of the imports.
@@ -486,10 +443,6 @@ namespace Microsoft.WinAny.Interop
             return result;
         }
 
-        #endregion
-
-        #region FinalizeSections
-
         /// <summary>
         /// Marks memory pages depending on section headers and release sections that are marked as "discardable".
         /// </summary>
@@ -560,10 +513,6 @@ namespace Microsoft.WinAny.Interop
             }
         }
 
-        #endregion
-
-        #region CallDllEntryPoint
-
         /// <summary>
         /// Calls module entry point.
         /// </summary>
@@ -618,10 +567,6 @@ namespace Microsoft.WinAny.Interop
             return true;
         }
 
-        #endregion
-
-        #region MemoryFreeLibrary
-
         /// <summary>
         /// Deattach from the process and do a cleanup.
         /// </summary>
@@ -664,10 +609,6 @@ namespace Microsoft.WinAny.Interop
             }
         }
 
-        #endregion
-
-        #region GetDelegateForFunction
-
         /// <summary>
         /// Retrieves a delegate of an exported function or variable from loaded module.
         /// </summary>
@@ -686,11 +627,6 @@ namespace Microsoft.WinAny.Interop
             return null;
         }
 
-        #endregion
-
-        #region GetDelegateForFunction
-
-
         /// <summary>
         /// Retrieves a delegate of an exported function or variable from loaded module.
         /// </summary>
@@ -701,10 +637,6 @@ namespace Microsoft.WinAny.Interop
         {
             return (T)(object)GetDelegateForFunction(procName, typeof(T));
         }
-
-        #endregion
-
-        #region GetProcAddress
 
         /// <summary>
         /// Retrieves the address of an exported function or variable from loaded module.
@@ -734,7 +666,7 @@ namespace Microsoft.WinAny.Interop
             uint* nameRef;
             ushort* ordinal;
 
-            
+
             WinNT.IMAGE_DATA_DIRECTORY* directory = this.GET_HEADER_DIRECTORY(memory_module, WinNT.IMAGE_DIRECTORY_ENTRY_EXPORT);
 
             if (directory->Size == 0)
@@ -776,10 +708,6 @@ namespace Microsoft.WinAny.Interop
             return (IntPtr)(codeBase + *(uint*)(codeBase + exports->AddressOfFunctions + (idx * 4)));
         }
 
-        #endregion
-
-        #region GET_HEADER_DIRECTORY
-
         private WinNT.IMAGE_DATA_DIRECTORY* GET_HEADER_DIRECTORY(MEMORY_MODULE* memory_module, uint index)
         {
             if (Environment.Is64BitProcess)
@@ -794,10 +722,6 @@ namespace Microsoft.WinAny.Interop
             }
         }
 
-        #endregion
-
-        #region MEMORY_MODULE
-
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         private struct MEMORY_MODULE
         {
@@ -808,13 +732,6 @@ namespace Microsoft.WinAny.Interop
             public int initialized;
         }
 
-        #endregion
-
-        #region DllEntryProc
-
         private delegate bool DllEntryProc(IntPtr hinstDll, uint fdwReason, uint lpReserved);
-
-        #endregion
-
     }
 }

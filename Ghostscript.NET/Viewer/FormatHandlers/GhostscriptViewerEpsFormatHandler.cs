@@ -34,28 +34,14 @@ namespace Ghostscript.NET.Viewer
 {
     internal class GhostscriptViewerEpsFormatHandler : GhostscriptViewerFormatHandler
     {
-        #region Private variables
-
         private string _content;
-
-        #endregion
-
-        #region Constructor
 
         public GhostscriptViewerEpsFormatHandler(GhostscriptViewer viewer) : base(viewer) { }
 
-        #endregion
-
-        #region Initialize
-
         public override void Initialize()
         {
-            
+
         }
-
-        #endregion
-
-        #region Open
 
         public override void Open(string filePath)
         {
@@ -119,45 +105,25 @@ namespace Ghostscript.NET.Viewer
             this.LastPageNumber = 1;
         }
 
-        #endregion
-
-        #region StdInput
-
         public override void StdInput(out string input, int count)
         {
             input = string.Empty;
         }
 
-        #endregion
-
-        #region StdOutput
-
         public override void StdOutput(string message)
         {
-            
+
         }
-
-        #endregion
-
-        #region StdError
 
         public override void StdError(string message)
         {
-            
+
         }
-
-        #endregion
-
-        #region InitPage
 
         public override void InitPage(int pageNumber)
         {
-            
+
         }
-
-        #endregion
-
-        #region ShowPage
 
         public override void ShowPage(int pageNumber)
         {
@@ -168,10 +134,7 @@ namespace Ghostscript.NET.Viewer
             if (!this.ShowPagePostScriptCommandInvoked)
             {
                 this.Execute("showpage");
-            }           
+            }
         }
-
-        #endregion
-
     }
 }

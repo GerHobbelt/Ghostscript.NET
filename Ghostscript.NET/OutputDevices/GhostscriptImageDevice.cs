@@ -28,9 +28,6 @@ using System;
 
 namespace Ghostscript.NET
 {
-
-    #region GhostscriptImageDeviceAlphaBits
-
     public enum GhostscriptImageDeviceAlphaBits
     {
         /// <summary>
@@ -50,43 +47,24 @@ namespace Ghostscript.NET
         V_4
     }
 
-    #endregion
-
-    #region GhostscriptImageDeviceResolution
-
     public class GhostscriptImageDeviceResolution
     {
-
-        #region Constructor
-
         public GhostscriptImageDeviceResolution(int x, int y)
         {
             X = x;
             Y = y;
         }
 
-        #endregion
-
-        #region X
-
         public int? X { get; set; }
-
-        #endregion
-
-        #region Y
 
         public int? Y { get; set; }
 
-        #endregion
 
     }
 
-    #endregion
 
     public class GhostscriptImageDevice : GhostscriptDevice
     {
-        #region Constructor
-
         public GhostscriptImageDevice()
         {
             this.Other.Safer = GhostscriptOptionalSwitch.Include;
@@ -94,29 +72,17 @@ namespace Ghostscript.NET
             this.Interaction.NoPause = GhostscriptOptionalSwitch.Include;
         }
 
-        #endregion
-
-        #region Resolution
-
         /// <summary>
         /// This option sets the resolution of the output file in dots per inch. The default value if you don't specify this options is usually 72 dpi.
         /// </summary>
         [GhostscriptSwitch("-r{0}")]
         public int? Resolution { get; set; }
 
-        #endregion
-
-        #region ResolutionXY
-
         /// <summary>
         /// This option sets the resolution of the output file in dots per inch. The default value if you don't specify this options is usually 72 dpi.
         /// </summary>
         [GhostscriptSwitch("-r{0}x{1}")]
         public GhostscriptImageDeviceResolution ResolutionXY { get; set; }
-
-        #endregion
-
-        #region TextAlphaBits
 
         /// <summary>
         /// These option control the use of subsample antialiasing. 
@@ -127,10 +93,6 @@ namespace Ghostscript.NET
         [GhostscriptSwitch("-dTextAlphaBits={0}")]
         public GhostscriptImageDeviceAlphaBits? TextAlphaBits { get; set; }
 
-        #endregion
-
-        #region GraphicsAlphaBits
-
         /// <summary>
         /// These option control the use of subsample antialiasing. 
         /// Their use is highly recommended for producing high quality rasterizations of the input files. 
@@ -139,7 +101,5 @@ namespace Ghostscript.NET
         /// </summary>
         [GhostscriptSwitch("-dGraphicsAlphaBits={0}")]
         public GhostscriptImageDeviceAlphaBits? GraphicsAlphaBits { get; set; }
-
-        #endregion
     }
 }

@@ -31,9 +31,6 @@ namespace Ghostscript.NET.Viewer
 {
     internal abstract class GhostscriptViewerFormatHandler : IDisposable
     {
-
-        #region Private variables
-
         private bool _disposed = false;
         private GhostscriptViewer _viewer = null;
         private int _firstPageNumber;
@@ -45,39 +42,21 @@ namespace Ghostscript.NET.Viewer
         private GhostscriptPageOrientation _pageOrientation = GhostscriptPageOrientation.Portrait;
         private bool _showPagePostScriptCommandInvoked = false;
 
-        #endregion
-
-        #region Constructor
-
         public GhostscriptViewerFormatHandler(GhostscriptViewer viewer)
         {
             _viewer = viewer;
         }
-
-        #endregion
-
-        #region Destructor
 
         ~GhostscriptViewerFormatHandler()
         {
             this.Dispose(false);
         }
 
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -92,12 +71,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Abstract methods
-
         public abstract void Initialize();
         public abstract void Open(string filePath);
         public abstract void StdInput(out string input, int count);
@@ -106,27 +79,15 @@ namespace Ghostscript.NET.Viewer
         public abstract void InitPage(int pageNumber);
         public abstract void ShowPage(int pageNumber);
 
-        #endregion
-
-        #region Execute
-
         public int Execute(string str)
         {
             return _viewer.Interpreter.Run(str);
         }
 
-        #endregion
-
-        #region Viewer
-
         public GhostscriptViewer Viewer
         {
             get { return _viewer; }
         }
-
-        #endregion
-
-        #region FirstPageNumber
 
         public int FirstPageNumber
         {
@@ -134,19 +95,11 @@ namespace Ghostscript.NET.Viewer
             set { _firstPageNumber = value; }
         }
 
-        #endregion
-
-        #region LastPageNumber
-
         public int LastPageNumber
         {
             get { return _lastPageNumber; }
             set { _lastPageNumber = value; }
         }
-
-        #endregion
-
-        #region CurrentPageNumber
 
         public int CurrentPageNumber
         {
@@ -154,19 +107,11 @@ namespace Ghostscript.NET.Viewer
             internal set { _currentPageNumber = value; }
         }
 
-        #endregion
-
-        #region MediaBox
-
         public GhostscriptRectangle MediaBox
         {
             get { return _mediaBox; }
             set { _mediaBox = value; }
         }
-
-        #endregion
-
-        #region BoundingBox
 
         public GhostscriptRectangle BoundingBox
         {
@@ -174,56 +119,32 @@ namespace Ghostscript.NET.Viewer
             set { _boundingBox = value; }
         }
 
-        #endregion
-
-        #region CropBox
-
         public GhostscriptRectangle CropBox
         {
             get { return _cropBox; }
             set { _cropBox = value; }
         }
 
-        #endregion
-
-        #region IsMediaBoxSet
-
         public bool IsMediaBoxSet
         {
             get { return _mediaBox != GhostscriptRectangle.Empty; }
         }
-
-        #endregion
-
-        #region IsBoundingBoxSet
 
         public bool IsBoundingBoxSet
         {
             get { return _boundingBox != GhostscriptRectangle.Empty; }
         }
 
-        #endregion
-
-        #region IsCropBoxSet
-
         public bool IsCropBoxSet
         {
             get { return _cropBox != GhostscriptRectangle.Empty; }
         }
-
-        #endregion
-
-        #region PageOrientation
 
         public GhostscriptPageOrientation PageOrientation
         {
             get { return _pageOrientation; }
             set { _pageOrientation = value; }
         }
-
-        #endregion
-
-        #region ShowPageInvoked
 
         internal bool ShowPagePostScriptCommandInvoked
         {
@@ -236,8 +157,6 @@ namespace Ghostscript.NET.Viewer
                 _showPagePostScriptCommandInvoked = value;
             }
         }
-
-        #endregion
 
     }
 }

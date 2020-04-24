@@ -31,9 +31,6 @@ using System.Runtime.InteropServices;
 
 namespace Ghostscript.NET
 {
-
-    #region gdevdsp
-
     public class gdevdsp
     {
         public const int DISPLAY_VERSION_MAJOR = 2;
@@ -48,11 +45,7 @@ namespace Ghostscript.NET
         public const long DISPLAY_ROW_ALIGN_MASK = 0x00700000L;
     }
 
-    #endregion
-
     /* The display format is set by a combination of the following bitfields */
-
-    #region DISPLAY_FORMAT_COLOR
 
     /// <summary>
     /// Define the color space alternatives.
@@ -66,26 +59,18 @@ namespace Ghostscript.NET
         DISPLAY_COLORS_SEPARATION = (1 << 19),
     }
 
-    #endregion
-
-    #region DISPLAY_FORMAT_ALPHA
-
     /// <summary>
     /// Define whether alpha information, or an extra unused bytes is included
     /// DISPLAY_ALPHA_FIRST and DISPLAY_ALPHA_LAST are not implemented
     /// </summary>
     public enum DISPLAY_FORMAT_ALPHA : long
     {
-        DISPLAY_ALPHA_NONE   = (0<<4),
-        DISPLAY_ALPHA_FIRST  = (1<<4),
-        DISPLAY_ALPHA_LAST   = (1<<5),
-        DISPLAY_UNUSED_FIRST = (1<<6),	/* e.g. Mac xRGB */
-        DISPLAY_UNUSED_LAST  = (1<<7)	/* e.g. Windows BGRx */
+        DISPLAY_ALPHA_NONE = (0 << 4),
+        DISPLAY_ALPHA_FIRST = (1 << 4),
+        DISPLAY_ALPHA_LAST = (1 << 5),
+        DISPLAY_UNUSED_FIRST = (1 << 6),	/* e.g. Mac xRGB */
+        DISPLAY_UNUSED_LAST = (1 << 7)	/* e.g. Windows BGRx */
     }
-
-    #endregion
-
-    #region DISPLAY_FORMAT_DEPTH
 
     /// <summary>
     /// Define the depth per component for DISPLAY_COLORS_GRAY,
@@ -105,10 +90,6 @@ namespace Ghostscript.NET
         /* unused (1<<15) */
     }
 
-    #endregion
-
-    #region DISPLAY_FORMAT_ENDIAN
-
     /// <summary>
     /// Define whether Red/Cyan should come first,
     /// or whether Blue/Black should come first
@@ -119,10 +100,6 @@ namespace Ghostscript.NET
         DISPLAY_LITTLEENDIAN = (1 << 16)	/* Blue/Black first */
     }
 
-    #endregion
-
-    #region DISPLAY_FORMAT_FIRSTROW
-
     /// <summary>
     /// Define whether the raster starts at the top or bottom of the bitmap
     /// </summary>
@@ -131,10 +108,6 @@ namespace Ghostscript.NET
         DISPLAY_TOPFIRST = (0 << 17),	/* Unix, Mac */
         DISPLAY_BOTTOMFIRST = (1 << 17)	/* Windows */
     }
-
-    #endregion
-
-    #region DISPLAY_FORMAT_555
 
     /// <summary>
     /// Define whether packing RGB in 16-bits should use 555
@@ -145,10 +118,6 @@ namespace Ghostscript.NET
         DISPLAY_NATIVE_555 = (0 << 18),
         DISPLAY_NATIVE_565 = (1 << 18)
     }
-
-    #endregion
-
-    #region DISPLAY_FORMAT_ROW_ALIGN
 
     /// <summary>
     /// Define the row alignment, which must be equal to or greater than
@@ -170,10 +139,6 @@ namespace Ghostscript.NET
         DISPLAY_ROW_ALIGN_32 = (6 << 20),
         DISPLAY_ROW_ALIGN_64 = (7 << 20)
     }
-
-    #endregion
-
-    #region display_callback
 
     /// <summary>
     /// Display device callback structure.
@@ -287,7 +252,4 @@ namespace Ghostscript.NET
         /// </summary>
         public display_separation_callback display_separation;
     }
-
-    #endregion
-
 }

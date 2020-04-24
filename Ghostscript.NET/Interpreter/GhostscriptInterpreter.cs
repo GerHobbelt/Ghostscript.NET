@@ -36,14 +36,7 @@ namespace Ghostscript.NET.Interpreter
     /// </summary>
     public class GhostscriptInterpreter : IDisposable
     {
-
-        #region Private constants
-
         private const int RUN_STRING_MAX_LENGTH = 65535;
-
-        #endregion
-
-        #region Private variables
 
         private bool _disposed = false;
         private GhostscriptLibrary _gs = null;
@@ -52,20 +45,12 @@ namespace Ghostscript.NET.Interpreter
         private GhostscriptDisplayDeviceHandler _displayDevice = null;
         private IntPtr _displayDevice_callback_handle = IntPtr.Zero;
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptInterpreter class.
         /// </summary>
         public GhostscriptInterpreter()
             : this(GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), false)
         { }
-
-        #endregion
-
-        #region Constructor - library
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptInterpreter class.
@@ -85,20 +70,12 @@ namespace Ghostscript.NET.Interpreter
             this.Initialize();
         }
 
-        #endregion
-
-        #region Constructor - version
-
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptInterpreter class.
         /// </summary>
         /// <param name="version">GhostscriptVersionInfo instance that tells which Ghostscript library to use.</param>
         public GhostscriptInterpreter(GhostscriptVersionInfo version) : this(version, false)
         { }
-
-        #endregion
-
-        #region Constructor - version, fromMemory
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptInterpreter class.
@@ -119,20 +96,10 @@ namespace Ghostscript.NET.Interpreter
             this.Initialize();
         }
 
-        #endregion
-
-        #region Destructor
-
         ~GhostscriptInterpreter()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         /// <summary>
         /// Releases all resources used by the Ghostscript.NET.GhostscriptInterpreter instance.
@@ -142,10 +109,6 @@ namespace Ghostscript.NET.Interpreter
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         /// <summary>
         /// Releases all resources used by the Ghostscript.NET.GhostscriptInterpreter instance.
@@ -177,12 +140,6 @@ namespace Ghostscript.NET.Interpreter
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Initialize
-
         /// <summary>
         /// Initializes a new instance of Ghostscript interpreter.
         /// </summary>
@@ -196,10 +153,6 @@ namespace Ghostscript.NET.Interpreter
                 throw new GhostscriptAPICallException("gsapi_new_instance", rc_ins);
             }
         }
-
-        #endregion
-
-        #region Setup
 
         /// <summary>
         /// Sets the stdio and display device callback handlers.
@@ -268,10 +221,6 @@ namespace Ghostscript.NET.Interpreter
 
         }
 
-        #endregion
-
-        #region InitArgs
-
         /// <summary>
         /// Initializes the interpreter.
         /// </summary>
@@ -285,11 +234,11 @@ namespace Ghostscript.NET.Interpreter
 
             string[] utf8args = new string[args.Length];
 
-            for(int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Length; i++)
             {
                 utf8args[i] = StringHelper.ToUtf8String(args[i]);
             }
-            
+
             // GSAPI: initialize the interpreter
             int rc_init = _gs.gsapi_init_with_args(_gs_instance, utf8args.Length, utf8args);
 
@@ -299,10 +248,6 @@ namespace Ghostscript.NET.Interpreter
                 throw new GhostscriptAPICallException("gsapi_init_with_args", rc_init);
             }
         }
-
-        #endregion
-
-        #region Run
 
         /// <summary>
         /// Runs a string.
@@ -370,10 +315,6 @@ namespace Ghostscript.NET.Interpreter
             }
         }
 
-        #endregion
-
-        #region RunFile
-
         /// <summary>
         /// Runs a PostScript file.
         /// </summary>
@@ -402,16 +343,9 @@ namespace Ghostscript.NET.Interpreter
             }
         }
 
-        #endregion
-
-        #region LibraryRevision
-
         public int LibraryRevision
         {
             get { return _gs.Revision; }
         }
-
-        #endregion
-
     }
 }

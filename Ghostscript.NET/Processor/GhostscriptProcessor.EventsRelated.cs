@@ -28,33 +28,18 @@ using System;
 
 namespace Ghostscript.NET.Processor
 {
-
-    #region Internal delegates
-
     internal delegate void StdInputEventHandler(out string input, int count);
     internal delegate void StdOutputEventHandler(string output);
     internal delegate void StdErrorEventHandler(string error);
-
-    #endregion
-
-    #region Public delegates
 
     public delegate void GhostscriptProcessorEventHandler(object sender, GhostscriptProcessorEventArgs e);
     public delegate void GhostscriptProcessorProcessingEventHandler(object sender, GhostscriptProcessorProcessingEventArgs e);
     public delegate void GhostscriptProcessorErrorEventHandler(object sender, GhostscriptProcessorErrorEventArgs e);
 
-    #endregion
-
-    #region GhostscriptProcessorEventArgs
-
     public class GhostscriptProcessorEventArgs : EventArgs
     {
         public GhostscriptProcessorEventArgs() { }
     }
-
-    #endregion
-
-    #region GhostscriptProcessorProcessingEventArgs
 
     public class GhostscriptProcessorProcessingEventArgs : EventArgs
     {
@@ -78,10 +63,6 @@ namespace Ghostscript.NET.Processor
         }
     }
 
-    #endregion
-
-    #region GhostscriptProcessorErrorEventArgs
-
     public class GhostscriptProcessorErrorEventArgs : EventArgs
     {
         private string _errorMessage;
@@ -96,7 +77,5 @@ namespace Ghostscript.NET.Processor
             get { return _errorMessage; }
         }
     }
-
-    #endregion
 
 }

@@ -30,24 +30,16 @@ namespace Ghostscript.NET
 {
     public class GhostscriptDevicePdfSwitches
     {
-        #region FirstPage
-
         /// <summary>
         /// Begins interpreting on the designated page of the document. Pages of all documents in PDF collections are numbered sequentionally.
         /// </summary>
         [GhostscriptSwitch("-dFirstPage={0}")]
         public int? FirstPage { get; set; }
 
-        #endregion
-
-        #region LastPage
-
         /// <summary>
         /// Stops interpreting after the designated page of the document. Pages of all documents in PDF collections are numbered sequentionally.
         /// </summary>
         [GhostscriptSwitch("-dLastPage={0}")]
         public int? LastPage { get; set; }
-
-        #endregion
     }
 }

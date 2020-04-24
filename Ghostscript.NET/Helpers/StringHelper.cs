@@ -30,13 +30,9 @@ namespace Ghostscript.NET
 {
     public class StringHelper
     {
-        #region ToUtf8String
-
         public static string ToUtf8String(string value)
         {
             return Encoding.UTF8.GetString(Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(value)));
         }
-
-        #endregion
     }
 }

@@ -28,9 +28,6 @@ namespace Ghostscript.NET
 {
     internal class BufferHelper
     {
-
-        #region IndexOf
-
         /// <summary>
         /// The Knuth-Morris-Pratt Pattern Matching Algorithm.
         /// </summary>
@@ -61,10 +58,6 @@ namespace Ghostscript.NET
             return -1;
         }
 
-        #endregion
-
-        #region ComputeFailure
-
         private static int[] ComputeFailure(byte[] pattern)
         {
             int[] failure = new int[pattern.Length];
@@ -88,8 +81,5 @@ namespace Ghostscript.NET
 
             return failure;
         }
-
-        #endregion
-
     }
 }

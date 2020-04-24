@@ -47,19 +47,20 @@ namespace Ghostscript.NET.Samples
             GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
 
             // pipe handle format: %handle%hexvalue
-            string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
+            string h = gsPipedOutput.ClientHandle;
+            string outputPipeHandle = "%handle%" + int.Parse(h).ToString("X2");
 
             using (GhostscriptProcessor processor = new GhostscriptProcessor())
             {
                 List<string> switches = new List<string>();
-                switches.Add("-empty");
+                //switches.Add("-empty");
                 switches.Add("-dQUIET");
                 switches.Add("-dSAFER");
                 switches.Add("-dBATCH");
                 switches.Add("-dNOPAUSE");
                 switches.Add("-dNOPROMPT");
                 switches.Add("-sDEVICE=pdfwrite");
-                switches.Add("-o" + outputPipeHandle);
+                switches.Add($"-o{ outputPipeHandle }");
                 switches.Add("-q");
                 switches.Add("-f");
                 switches.Add(inputFile);

@@ -33,14 +33,7 @@ namespace Ghostscript.NET
     /// </summary>
     public sealed class GhostscriptSwitchAttribute : Attribute
     {
-
-        #region Private variables
-
         private string _name;
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptSwitchAttribute class.
@@ -51,10 +44,6 @@ namespace Ghostscript.NET
             _name = name;
         }
 
-        #endregion
-
-        #region Name
-
         /// <summary>
         /// Gets the switch name.
         /// </summary>
@@ -62,9 +51,6 @@ namespace Ghostscript.NET
         {
             get { return _name; }
         }
-
-        #endregion
-
     }
 
     /// <summary>
@@ -72,14 +58,7 @@ namespace Ghostscript.NET
     /// </summary>
     public sealed class GhostscriptSwitchValueAttribute : Attribute
     {
-
-        #region Private variables
-
         private string _value;
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptSwitchValueAttribute class.
@@ -90,10 +69,6 @@ namespace Ghostscript.NET
             _value = value;
         }
 
-        #endregion
-
-        #region Value
-
         /// <summary>
         /// Gets the switch value.
         /// </summary>
@@ -101,8 +76,5 @@ namespace Ghostscript.NET
         {
             get { return _value; }
         }
-
-        #endregion
-
     }
 }

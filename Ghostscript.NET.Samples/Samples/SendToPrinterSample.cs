@@ -42,7 +42,7 @@ namespace Ghostscript.NET.Samples
             using (GhostscriptProcessor processor = new GhostscriptProcessor())
             {
                 List<string> switches = new List<string>();
-                switches.Add("-empty");
+                //switches.Add("-empty");
                 switches.Add("-dPrinted");
                 switches.Add("-dBATCH");
                 switches.Add("-dNOPAUSE");

@@ -31,9 +31,6 @@ using System.Runtime.InteropServices;
 
 namespace Ghostscript.NET
 {
-
-    #region gsapi_revision_s
-
     [StructLayout(LayoutKind.Sequential)]
     public struct gsapi_revision_s
     {
@@ -43,7 +40,6 @@ namespace Ghostscript.NET
         public int revisiondate;
     }
 
-    #endregion
 
     /// <summary>
     /// Get version numbers and strings.
@@ -159,7 +155,7 @@ namespace Ghostscript.NET
     /// <param name="argc"></param>
     /// <param name="argv"></param>
     /// <returns></returns>
-    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet=CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
     public delegate int gsapi_init_with_args(IntPtr instance, Int32 argc, string[] argv);
 
     // The gsapi_run_* functions are like gs_main_run_* except
@@ -172,19 +168,19 @@ namespace Ghostscript.NET
     [UnmanagedFunctionPointer(CallingConvention.Winapi)]
     public delegate int gsapi_run_string_begin(IntPtr instance, Int32 user_errors, out Int32 pexit_code);
 
-    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet=CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
     public delegate int gsapi_run_string_continue(IntPtr instance, String str, UInt32 length, Int32 user_errors, out Int32 pexit_code);
 
     [UnmanagedFunctionPointer(CallingConvention.Winapi)]
     public delegate int gsapi_run_string_end(IntPtr instance, Int32 user_errors, out Int32 pexit_code);
 
-    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet=CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
     public delegate int gsapi_run_string_with_length(IntPtr instance, String str, UInt32 length, Int32 user_errors, out Int32 pexit_code);
-    
-    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet=CharSet.Ansi)]
+
+    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
     public delegate int gsapi_run_string(IntPtr instance, String str, Int32 user_errors, out Int32 pexit_code);
 
-    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet=CharSet.Ansi)]
+    [UnmanagedFunctionPointer(CallingConvention.Winapi, CharSet = CharSet.Ansi)]
     public delegate int gsapi_run_file(IntPtr instance, String file_name, Int32 user_errors, out Int32 pexit_code);
 
     /// <summary>
@@ -196,5 +192,4 @@ namespace Ghostscript.NET
     /// <returns></returns>
     [UnmanagedFunctionPointer(CallingConvention.Winapi)]
     public delegate int gsapi_exit(IntPtr instance);
-
 }

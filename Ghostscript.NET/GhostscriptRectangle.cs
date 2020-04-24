@@ -33,32 +33,17 @@ namespace Ghostscript.NET
     /// </summary>
     public class GhostscriptRectangle
     {
-
-        #region Private values
-
         private float _llx;
         private float _lly;
         private float _urx;
         private float _ury;
 
-        #endregion
-
-        #region Static variables
-
         public static GhostscriptRectangle Empty = new GhostscriptRectangle();
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptRectangle class.
         /// </summary>
         public GhostscriptRectangle() { }
-
-        #endregion
-
-        #region Constructor - llx, lly, urx, ury
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptRectangle class.
@@ -75,10 +60,6 @@ namespace Ghostscript.NET
             _ury = ury;
         }
 
-        #endregion
-
-        #region llx
-
         /// <summary>
         /// Gets lower-left x.
         /// </summary>
@@ -87,10 +68,6 @@ namespace Ghostscript.NET
             get { return _llx; }
             set { _llx = value; }
         }
-
-        #endregion
-
-        #region lly
 
         /// <summary>
         /// Gets lower-left y.
@@ -101,10 +78,6 @@ namespace Ghostscript.NET
             set { _lly = value; }
         }
 
-        #endregion
-
-        #region urx
-
         /// <summary>
         /// Gets upper-right x.
         /// </summary>
@@ -114,10 +87,6 @@ namespace Ghostscript.NET
             set { _urx = value; }
         }
 
-        #endregion
-
-        #region ury
-
         /// <summary>
         /// Gets upper-right y.
         /// </summary>
@@ -126,8 +95,5 @@ namespace Ghostscript.NET
             get { return _ury; }
             set { _ury = value; }
         }
-
-        #endregion
-
     }
 }

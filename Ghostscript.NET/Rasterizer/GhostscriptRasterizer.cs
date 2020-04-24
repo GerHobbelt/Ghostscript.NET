@@ -34,17 +34,10 @@ namespace Ghostscript.NET.Rasterizer
 {
     public class GhostscriptRasterizer : IDisposable
     {
-
-        #region Private variables
-
         private bool _disposed = false;
         private GhostscriptViewer _viewer;
         private Image _lastRasterizedImage = null;
         private GhostscriptViewerState _gsViewState;
-
-        #endregion
-
-        #region Constructor
 
         public GhostscriptRasterizer(GhostscriptStdIO stdIo)
         {
@@ -64,10 +57,6 @@ namespace Ghostscript.NET.Rasterizer
         {
         }
 
-        #endregion
-
-        #region Constructor - viewerInstance
-
         public GhostscriptRasterizer(GhostscriptViewer viewerInstance)
         {
             if (viewerInstance == null)
@@ -81,30 +70,16 @@ namespace Ghostscript.NET.Rasterizer
             _viewer.DisplayPage += new GhostscriptViewerViewEventHandler(_viewer_DisplayPage);
         }
 
-        #endregion
-
-        #region Destructor
-
         ~GhostscriptRasterizer()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -130,12 +105,6 @@ namespace Ghostscript.NET.Rasterizer
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Open - stream
-
         public void Open(Stream stream)
         {
             if (stream == null)
@@ -145,10 +114,6 @@ namespace Ghostscript.NET.Rasterizer
 
             this.Open(stream, GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), false);
         }
-
-        #endregion
-
-        #region Open - path
 
         public void Open(string path)
         {
@@ -167,10 +132,6 @@ namespace Ghostscript.NET.Rasterizer
             this.Open(path, GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), false);
         }
 
-        #endregion
-
-        #region Open - stream, versionInfo, dllFromMemory
-
         public void Open(Stream stream, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
             if (stream == null)
@@ -188,10 +149,6 @@ namespace Ghostscript.NET.Rasterizer
                 _viewer.Open(stream, versionInfo, dllFromMemory);
             }
         }
-
-        #endregion
-
-        #region Open - path, versionInfo, dllFromMemory
 
         public void Open(string path, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
@@ -218,10 +175,6 @@ namespace Ghostscript.NET.Rasterizer
             }
         }
 
-        #endregion
-
-        #region Open - stream, library
-
         public void Open(Stream stream, byte[] library)
         {
             if (stream == null)
@@ -239,10 +192,6 @@ namespace Ghostscript.NET.Rasterizer
                 _viewer.Open(stream, library);
             }
         }
-
-        #endregion
-
-        #region Open - path, library
 
         public void Open(string path, byte[] library)
         {
@@ -269,10 +218,6 @@ namespace Ghostscript.NET.Rasterizer
             }
         }
 
-        #endregion
-
-        #region Close
-
         /// <summary>
         /// Close the GhostscriptRasterizer.
         /// </summary>
@@ -284,10 +229,6 @@ namespace Ghostscript.NET.Rasterizer
             }
         }
 
-        #endregion
-
-        #region PageCount
-
         /// <summary>
         /// Gets PDF page count.
         /// </summary>
@@ -295,10 +236,6 @@ namespace Ghostscript.NET.Rasterizer
         {
             get { return _viewer.LastPageNumber; }
         }
-
-        #endregion
-
-        #region GetPage
 
         /// <summary>
         /// Gets PDF page as System.Drawing.Image.
@@ -315,10 +252,6 @@ namespace Ghostscript.NET.Rasterizer
             return _lastRasterizedImage;
         }
 
-        #endregion
-
-        #region _viewer_DisplayPage
-
         void _viewer_DisplayPage(object sender, GhostscriptViewerViewEventArgs e)
         {
             if (e.Image != null)
@@ -327,29 +260,17 @@ namespace Ghostscript.NET.Rasterizer
             }
         }
 
-        #endregion
-
-        #region GraphicsAlphaBits
-
         public int GraphicsAlphaBits
         {
             get { return _viewer.GraphicsAlphaBits; }
             set { _viewer.GraphicsAlphaBits = value; }
         }
 
-        #endregion
-
-        #region TextAlphaBits
-
         public int TextAlphaBits
         {
             get { return _viewer.TextAlphaBits; }
             set { _viewer.TextAlphaBits = value; }
         }
-
-        #endregion
-
-        #region EPSClip
 
         public bool EPSClip
         {
@@ -363,10 +284,6 @@ namespace Ghostscript.NET.Rasterizer
             }
         }
 
-        #endregion
-
-        #region CustomSwitches
-
         public List<string> CustomSwitches
         {
             get
@@ -378,8 +295,5 @@ namespace Ghostscript.NET.Rasterizer
                 _viewer.CustomSwitches = value;
             }
         }
-
-        #endregion
-
     }
 }

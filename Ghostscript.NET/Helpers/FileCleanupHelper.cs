@@ -32,23 +32,12 @@ namespace Ghostscript.NET
 {
     internal class FileCleanupHelper
     {
-
-        #region Private variables
-
         private List<string> _paths = new List<string>();
-
-        #endregion
-
-        #region Add
 
         public void Add(string path)
         {
             _paths.Add(path);
         }
-
-        #endregion
-
-        #region Cleanup
 
         public void Cleanup()
         {
@@ -66,8 +55,5 @@ namespace Ghostscript.NET
 
             _paths.Clear();
         }
-
-        #endregion
-
     }
 }

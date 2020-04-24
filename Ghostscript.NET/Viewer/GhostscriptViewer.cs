@@ -35,8 +35,6 @@ namespace Ghostscript.NET.Viewer
 {
     public class GhostscriptViewer : IDisposable
     {
-        #region Private variables
-
         private bool _disposed = false;
         private GhostscriptInterpreter _interpreter = null;
         private string _filePath = null;
@@ -53,15 +51,9 @@ namespace Ghostscript.NET.Viewer
         private bool _epsClip = true;
         private List<string> _customSwitches = new List<string>();
 
-        #endregion
-
-        #region Public events
-
         public event GhostscriptViewerViewEventHandler DisplaySize;
         public event GhostscriptViewerViewEventHandler DisplayUpdate;
         public event GhostscriptViewerViewEventHandler DisplayPage;
-
-        #region OnDisplaySize
 
         protected virtual void OnDisplaySize(GhostscriptViewerViewEventArgs e)
         {
@@ -71,10 +63,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
-
-        #region OnDisplayUpdate
-
         protected virtual void OnDisplayUpdate(GhostscriptViewerViewEventArgs e)
         {
             if (DisplayUpdate != null)
@@ -82,10 +70,6 @@ namespace Ghostscript.NET.Viewer
                 DisplayUpdate(this, e);
             }
         }
-
-        #endregion
-
-        #region OnDisplayPage
 
         protected virtual void OnDisplayPage(GhostscriptViewerViewEventArgs e)
         {
@@ -95,41 +79,21 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Constructor
-
         public GhostscriptViewer()
         {
 
         }
-
-        #endregion
-
-        #region Destructor
 
         ~GhostscriptViewer()
         {
             Dispose(false);
         }
 
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -156,12 +120,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Open - stream
-
         public void Open(Stream stream)
         {
             if (stream == null)
@@ -175,10 +133,6 @@ namespace Ghostscript.NET.Viewer
 
             this.Open(path);
         }
-
-        #endregion
-
-        #region Open - path
 
         public void Open(string path)
         {
@@ -196,10 +150,6 @@ namespace Ghostscript.NET.Viewer
 
             this.Open(path, GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), false);
         }
-
-        #endregion
-
-        #region Open - stream, versionInfo, dllFromMemory
 
         public void Open(Stream stream, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
@@ -219,10 +169,6 @@ namespace Ghostscript.NET.Viewer
 
             this.Open(path, versionInfo, dllFromMemory);
         }
-
-        #endregion
-
-        #region Open - path, versionInfo, dllFromMemory
 
         public void Open(string path, GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
@@ -252,10 +198,6 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
-
-        #region Open - stream, library
-
         public void Open(Stream stream, byte[] library)
         {
             if (stream == null)
@@ -269,10 +211,6 @@ namespace Ghostscript.NET.Viewer
 
             this.Open(path, library);
         }
-
-        #endregion
-
-        #region Open - path, library
 
         public void Open(string path, byte[] library)
         {
@@ -302,10 +240,6 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
-
-        #region Open - versionInfo, dllFromMemory
-
         public void Open(GhostscriptVersionInfo versionInfo, bool dllFromMemory)
         {
             if (versionInfo == null)
@@ -322,10 +256,6 @@ namespace Ghostscript.NET.Viewer
             this.Open();
         }
 
-        #endregion
-
-        #region Open - library
-
         public void Open(byte[] library)
         {
             if (library == null)
@@ -341,10 +271,6 @@ namespace Ghostscript.NET.Viewer
 
             this.Open();
         }
-
-        #endregion
-
-        #region Open
 
         private void Open()
         {
@@ -387,7 +313,8 @@ namespace Ghostscript.NET.Viewer
                     }
             }
 
-            _interpreter.Setup(new GhostscriptViewerStdIOHandler(this, _formatHandler), new GhostscriptViewerDisplayHandler(this));
+            GhostscriptStdIO _stdIOhandler = new GhostscriptViewerStdIOHandler(this, _formatHandler);
+            _interpreter.Setup(_stdIOhandler, new GhostscriptViewerDisplayHandler(this));
 
             List<string> args = new List<string>();
             //args.Add("-gsnet");
@@ -429,7 +356,7 @@ namespace Ghostscript.NET.Viewer
             {
                 args.Add("-dMaxBitmap=1g");
             }
-            else 
+            else
             {
                 // assume a 4K screen+50%
                 args.Add($"-dMaxBitmap={ (int)(4096 * 2160 * 4 * 1.5) }");
@@ -452,10 +379,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region Close
-
         public void Close()
         {
             if (_formatHandler != null)
@@ -470,27 +393,15 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region AttachStdIO
-
         public void AttachStdIO(GhostscriptStdIO stdIoCallback)
         {
             _stdIoCallback = stdIoCallback;
         }
 
-#endregion
-
-#region ShowPage - pageNumber
-
         public void ShowPage(int pageNumber)
         {
             this.ShowPage(pageNumber, false);
         }
-
-#endregion
-
-#region ShowPage - pageNumber, refresh
 
         public void ShowPage(int pageNumber, bool refresh)
         {
@@ -596,10 +507,6 @@ namespace Ghostscript.NET.Viewer
             _formatHandler.ShowPage(pageNumber);
         }
 
-#endregion
-
-#region ShowFirstPage
-
         public void ShowFirstPage()
         {
             if (this.CurrentPageNumber == this.FirstPageNumber)
@@ -607,10 +514,6 @@ namespace Ghostscript.NET.Viewer
 
             this.ShowPage(this.FirstPageNumber);
         }
-
-#endregion
-
-#region ShowNextPage
 
         public void ShowNextPage()
         {
@@ -620,10 +523,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region ShowPreviousPage
-
         public void ShowPreviousPage()
         {
             if (this.CurrentPageNumber - 1 >= this.FirstPageNumber)
@@ -631,10 +530,6 @@ namespace Ghostscript.NET.Viewer
                 this.ShowPage(this.CurrentPageNumber - 1);
             }
         }
-
-#endregion
-
-#region ShowLastPage
 
         public void ShowLastPage()
         {
@@ -644,10 +539,6 @@ namespace Ghostscript.NET.Viewer
             this.ShowPage(this.LastPageNumber);
         }
 
-#endregion
-
-#region RefreshPage
-
         public void RefreshPage()
         {
             if (this.IsEverythingInitialized)
@@ -655,10 +546,6 @@ namespace Ghostscript.NET.Viewer
                 this.ShowPage(this.CurrentPageNumber, true);
             }
         }
-
-#endregion
-
-#region IsPageNumberValid
 
         public bool IsPageNumberValid(int pageNumber)
         {
@@ -671,10 +558,6 @@ namespace Ghostscript.NET.Viewer
                 return false;
             }
         }
-
-#endregion
-
-#region Zoom
 
         public bool Zoom(float scale, bool test = false)
         {
@@ -696,10 +579,6 @@ namespace Ghostscript.NET.Viewer
             return true;
         }
 
-#endregion
-
-#region ZoomIn
-
         public void ZoomIn()
         {
             if (this.IsEverythingInitialized)
@@ -709,10 +588,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region ZoomOut
-
         public void ZoomOut()
         {
             if (this.IsEverythingInitialized)
@@ -721,10 +596,6 @@ namespace Ghostscript.NET.Viewer
                 this.RefreshPage();
             }
         }
-
-#endregion
-
-#region SaveState
 
         public GhostscriptViewerState SaveState()
         {
@@ -736,10 +607,6 @@ namespace Ghostscript.NET.Viewer
             return state;
         }
 
-#endregion
-
-#region RestoreState
-
         public void RestoreState(GhostscriptViewerState state)
         {
             _zoom_xDpi = state.XDpi;
@@ -747,12 +614,6 @@ namespace Ghostscript.NET.Viewer
             _formatHandler.CurrentPageNumber = state.CurrentPage;
             _progressiveUpdate = state.ProgressiveUpdate;
         }
-
-#endregion
-
-#region Internal methods
-
-#region StdInput
 
         internal void StdInput(out string input, int count)
         {
@@ -764,10 +625,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region StdOutput
-
         internal void StdOutput(string message)
         {
             if (_stdIoCallback != null)
@@ -775,10 +632,6 @@ namespace Ghostscript.NET.Viewer
                 _stdIoCallback.StdOut(message);
             }
         }
-
-#endregion
-
-#region StdError
 
         internal void StdError(string message)
         {
@@ -788,36 +641,20 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region RaiseDisplaySize
-
         internal void RaiseDisplaySize(GhostscriptViewerViewEventArgs e)
         {
             this.OnDisplaySize(e);
         }
-
-#endregion
-
-#region RaiseDisplayPage
 
         internal void RaiseDisplayPage(GhostscriptViewerViewEventArgs e)
         {
             this.OnDisplayPage(e);
         }
 
-#endregion
-
-#region RaiseDisplayUpdate
-
         internal void RaiseDisplayUpdate(GhostscriptViewerViewEventArgs e)
         {
             this.OnDisplayUpdate(e);
         }
-
-#endregion
-
-#region ZoomXDpi
 
         internal int ZoomXDpi
         {
@@ -825,41 +662,21 @@ namespace Ghostscript.NET.Viewer
             set { _zoom_xDpi = value; }
         }
 
-#endregion
-
-#region ZoomYDpi
-
         internal int ZoomYDpi
         {
             get { return _zoom_yDpi; }
             set { _zoom_yDpi = value; }
         }
 
-#endregion
-
-#endregion
-
-#region Public properties
-
-#region Interpreter
-
         public GhostscriptInterpreter Interpreter
         {
             get { return _interpreter; }
         }
 
-#endregion
-
-#region IsEverythingInitialized
-
         public bool IsEverythingInitialized
         {
             get { return _formatHandler != null; }
         }
-
-#endregion
-
-#region FilePath
 
         public string FilePath
         {
@@ -876,13 +693,9 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region CurrentPageNumber
-
         public int CurrentPageNumber
         {
-            get 
+            get
             {
                 if (this.IsEverythingInitialized)
                 {
@@ -895,13 +708,9 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region FirstPageNumber
-
         public int FirstPageNumber
         {
-            get 
+            get
             {
                 if (this.IsEverythingInitialized)
                 {
@@ -914,13 +723,9 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region LastPageNumber
-
         public int LastPageNumber
         {
-            get 
+            get
             {
                 if (this.IsEverythingInitialized)
                 {
@@ -932,10 +737,6 @@ namespace Ghostscript.NET.Viewer
                 }
             }
         }
-
-#endregion
-
-#region ProgressiveUpdate
 
         public bool ProgressiveUpdate
         {
@@ -949,19 +750,11 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region ProgressiveUpdateInterval
-
         public int ProgressiveUpdateInterval
         {
             get { return _progressiveUpdateInterval; }
             set { _progressiveUpdateInterval = value; }
         }
-
-#endregion
-
-#region CanShowFirstPage
 
         public bool CanShowFirstPage
         {
@@ -971,10 +764,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region CanShowPreviousPage
-
         public bool CanShowPreviousPage
         {
             get
@@ -982,10 +771,6 @@ namespace Ghostscript.NET.Viewer
                 return this.CurrentPageNumber > this.FirstPageNumber;
             }
         }
-
-#endregion
-        
-#region CanShowNextPage
 
         public bool CanShowNextPage
         {
@@ -995,10 +780,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region CanShowLastPage
-
         public bool CanShowLastPage
         {
             get
@@ -1006,10 +787,6 @@ namespace Ghostscript.NET.Viewer
                 return this.CurrentPageNumber != this.LastPageNumber;
             }
         }
-
-#endregion
-
-#region CanZoomIn
 
         public bool CanZoomIn
         {
@@ -1019,10 +796,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region CanZoomOut
-
         public bool CanZoomOut
         {
             get
@@ -1031,29 +804,17 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region GraphicsAlphaBits
-
         public int GraphicsAlphaBits
         {
             get { return _graphicsAlphaBits; }
             set { _graphicsAlphaBits = value; }
         }
 
-#endregion
-
-#region TextAlphaBits
-
         public int TextAlphaBits
         {
             get { return _textAlphaBits; }
             set { _textAlphaBits = value; }
         }
-
-#endregion
-
-#region EPSClip
 
         public bool EPSClip
         {
@@ -1066,10 +827,6 @@ namespace Ghostscript.NET.Viewer
                 _epsClip = value;
             }
         }
-
-#endregion
-
-#region CurrentPageOrientation
 
         public GhostscriptPageOrientation CurrentPageOrientation
         {
@@ -1086,10 +843,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region CustomSwitches
-
         public List<string> CustomSwitches
         {
             get
@@ -1102,10 +855,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#region DPI
-
         public int Dpi
         {
             get { return ZoomXDpi; }
@@ -1116,35 +865,18 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
-
-#endregion
-
-#region Internal properties
-
-#region ShowPageAfterOpen
-
         public bool ShowPageAfterOpen
         {
             get { return _showPageAfterOpen; }
             set { _showPageAfterOpen = value; }
         }
 
-#endregion
-
-#endregion
-
-#region Internal properties
-
-#region FormatHandler
-
         internal GhostscriptViewerFormatHandler FormatHandler
         {
-            get { return _formatHandler; }
+            get
+            {
+                return _formatHandler;
+            }
         }
-
-#endregion
-
-#endregion
     }
 }

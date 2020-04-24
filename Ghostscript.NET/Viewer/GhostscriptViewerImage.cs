@@ -32,9 +32,6 @@ namespace Ghostscript.NET.Viewer
 {
     public class GhostscriptViewerImage : IDisposable
     {
-
-        #region Private variables
-
         private bool _disposed = false;
         private int _width;
         private int _height;
@@ -42,10 +39,6 @@ namespace Ghostscript.NET.Viewer
         private int _stride;
         private Bitmap _bitmap;
         private BitmapData _bitmapData;
-
-        #endregion
-
-        #region Constructor
 
         public GhostscriptViewerImage(int width, int height, int stride, PixelFormat format)
         {
@@ -58,30 +51,16 @@ namespace Ghostscript.NET.Viewer
             _bitmap = new Bitmap(width, height, format);
         }
 
-        #endregion
-
-        #region Destructor
-
         ~GhostscriptViewerImage()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -102,21 +81,11 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Create
-
         public static GhostscriptViewerImage Create(int width, int height, int stride, PixelFormat format)
         {
             GhostscriptViewerImage gvi = new GhostscriptViewerImage(width, height, stride, format);
             return gvi;
         }
-
-        #endregion
-
-        #region Lock
 
         internal void Lock()
         {
@@ -126,27 +95,21 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
 
-        #region Scan0
 
         internal IntPtr Scan0
         {
             get { return _bitmapData.Scan0; }
         }
 
-        #endregion
 
-        #region Stride
 
         public int Stride
         {
             get { return _bitmapData.Stride; }
         }
 
-        #endregion
 
-        #region Unlock
 
         internal void Unlock()
         {
@@ -157,34 +120,25 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
 
-        #region Width
 
         public int Width
         {
             get { return _width; }
         }
 
-        #endregion
 
-        #region Height
 
         public int Height
         {
             get { return _height; }
         }
 
-        #endregion
 
-        #region Bitmap
 
         public Bitmap @Bitmap
         {
             get { return _bitmap; }
         }
-
-        #endregion
-
     }
 }

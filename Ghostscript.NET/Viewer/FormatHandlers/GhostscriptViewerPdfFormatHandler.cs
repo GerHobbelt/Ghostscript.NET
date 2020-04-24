@@ -34,8 +34,7 @@ namespace Ghostscript.NET.Viewer
 {
     internal class GhostscriptViewerPdfFormatHandler : GhostscriptViewerFormatHandler
     {
-        #region Private constants
-
+        
         private const string PDF_TAG = "%GSNET";
         private const string PDF_PAGES_TAG = "%GSNET_VIEWER_PDF_PAGES: ";
         private const string PDF_PAGE_TAG = "%GSNET_VIEWER_PDF_PAGE: ";
@@ -45,16 +44,12 @@ namespace Ghostscript.NET.Viewer
         private const string PDF_DONE_TAG = "%GSNET_VIEWER_PDF_DONE: ";
         private const string PDF_MARK_TAG = "%GSNET_VIEWER_PDF_MARK: ";
 
-        #endregion
-
-        #region Constructor
-
+        
+        
         public GhostscriptViewerPdfFormatHandler(GhostscriptViewer viewer) : base(viewer) { }
 
-        #endregion
-
-        #region Initialize
-
+        
+        
         public override void Initialize()
         {
             // define our routine for preparing to show a page.  
@@ -90,9 +85,7 @@ namespace Ghostscript.NET.Viewer
 #endif
         }
 
-#endregion
 
-#region Open
 
         public override void Open(string filePath)
         {
@@ -126,18 +119,14 @@ namespace Ghostscript.NET.Viewer
             chk();
         }
 
-        #endregion
-
-        #region StdInput
-
+        
+        
         public override void StdInput(out string input, int count)
         {
             input = string.Empty;
         }
 
-#endregion
 
-#region StdOutput
 
         public override void StdOutput(string message)
         {
@@ -253,18 +242,14 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
 
-#region StdError
 
         public override void StdError(string message)
         {
 
         }
 
-#endregion
 
-#region InitPage
 
         public override void InitPage(int pageNumber)
         {
@@ -278,9 +263,7 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
 
-#region ShowPage
 
         public override void ShowPage(int pageNumber)
         {
@@ -294,7 +277,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-#endregion
 
     }
 }

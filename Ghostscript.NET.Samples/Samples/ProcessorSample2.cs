@@ -50,20 +50,20 @@ namespace Ghostscript.NET.Samples
                 processor.Processing += new GhostscriptProcessorProcessingEventHandler(processor_Processing);
 
                 List<string> switches = new List<string>();
-                switches.Add("-empty");
+                //switches.Add("-empty");
                 switches.Add("-dSAFER");
                 switches.Add("-dBATCH");
                 switches.Add("-dNOPAUSE");
                 switches.Add("-dNOPROMPT");
-                switches.Add(@"-sFONTPATH=" + System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts));
+                switches.Add($"-sFONTPATH={ System.Environment.GetFolderPath(System.Environment.SpecialFolder.Fonts) }");
                 switches.Add("-dFirstPage=" + pageFrom.ToString());
                 switches.Add("-dLastPage=" + pageTo.ToString());
                 switches.Add("-sDEVICE=png16m");
                 switches.Add("-r96");
                 switches.Add("-dTextAlphaBits=4");
                 switches.Add("-dGraphicsAlphaBits=4");
-                switches.Add(@"-sOutputFile=" + outputFile);
-                switches.Add(@"-f");
+                switches.Add($"-sOutputFile={outputFile}");
+                switches.Add("-f");
                 switches.Add(inputFile);
 
                 // if you dont want to handle stdio, you can pass 'null' value as the last parameter

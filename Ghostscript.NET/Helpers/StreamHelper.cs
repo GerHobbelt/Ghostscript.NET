@@ -31,9 +31,6 @@ namespace Ghostscript.NET
 {
     internal class StreamHelper
     {
-
-        #region GetStreamExtension
-
         public static string GetStreamExtension(Stream stream)
         {
             // https://github.com/awslabs/aws-sdk-xamarin/blob/master/AWS.XamarinSDK/AWSSDK_Core/Amazon.Runtime/Internal/Util/HashStream.cs
@@ -100,13 +97,13 @@ namespace Ghostscript.NET
 
                     stream.Position = 0;
 
-                    if (BufferHelper.IndexOf(test, new byte[] { 0x25, 0x50, 0x44, 0x46}) > -1)
+                    if (BufferHelper.IndexOf(test, new byte[] { 0x25, 0x50, 0x44, 0x46 }) > -1)
                     {
                         extension = ".pdf";
                     }
                 }
-                
-                if(string.IsNullOrWhiteSpace(extension))
+
+                if (string.IsNullOrWhiteSpace(extension))
                 {
                     // we didn't find pdf marker within first 32 bytes, read whole stream and search for pdf marker anywhere
                     BinaryReader reader = new BinaryReader(stream);
@@ -129,9 +126,7 @@ namespace Ghostscript.NET
             return extension;
         }
 
-        #endregion
 
-        #region WriteToTemporaryFile
 
         public static string WriteToTemporaryFile(Stream stream)
         {
@@ -154,9 +149,7 @@ namespace Ghostscript.NET
             return path;
         }
 
-        #endregion
 
-        #region CopyStream
 
         public static void CopyStream(Stream input, Stream output)
         {
@@ -172,8 +165,5 @@ namespace Ghostscript.NET
                 output.Write(buffer, 0, n);
             } while (n != 0);
         }
-
-        #endregion
-
     }
 }

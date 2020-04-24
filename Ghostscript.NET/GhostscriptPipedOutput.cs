@@ -36,17 +36,10 @@ namespace Ghostscript.NET
     /// </summary>
     public class GhostscriptPipedOutput : IDisposable
     {
-
-        #region Private variables
-
         private bool _disposed = false;
         private AnonymousPipeServerStream _pipe;
         private Thread _thread = null;
         private MemoryStream _data = new MemoryStream();
-
-        #endregion
-
-        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptPipedOutput class.
@@ -58,20 +51,10 @@ namespace Ghostscript.NET
             _thread.Start();
         }
 
-        #endregion
-
-        #region Destructor
-
         ~GhostscriptPipedOutput()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         /// <summary>
         /// Releases all resources used by the Ghostscript.NET.GhostscriptPipedOutput instance.
@@ -81,10 +64,6 @@ namespace Ghostscript.NET
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         /// <summary>
         /// Releases all resources used by the Ghostscript.NET.GhostscriptPipedOutput instance.
@@ -106,7 +85,7 @@ namespace Ghostscript.NET
                         // this is a workaround, if we don't set the handle as invalid, when
                         // garbage collector tries to dispose this handle, exception is thrown
                         _pipe.ClientSafePipeHandle.SetHandleAsInvalid();
-                        
+
                         _pipe.Dispose(); _pipe = null;
                     }
 
@@ -127,26 +106,16 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region ClientHandle
-
         /// <summary>
         /// Gets pipes client handle as string. 
         /// </summary>
         public string ClientHandle
         {
-            get 
+            get
             {
                 return _pipe.GetClientHandleAsString();
             }
         }
-
-        #endregion
-
-        #region ReadGhostscriptPipeOutput
 
         /// <summary>
         /// Reads Ghostscript output.
@@ -154,7 +123,7 @@ namespace Ghostscript.NET
         public void ReadGhostscriptPipeOutput(object state)
         {
             // create BinaryReader instance through which we will read out Ghostscript output
-            using(BinaryReader reader = new BinaryReader(_pipe))
+            using (BinaryReader reader = new BinaryReader(_pipe))
             {
                 // allocate memory space for the incoming output data
                 byte[] buffer = new byte[_pipe.InBufferSize];
@@ -170,10 +139,6 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
-
-        #region Data
-
         /// <summary>
         /// Gets the Ghostscript output.
         /// </summary>
@@ -185,9 +150,5 @@ namespace Ghostscript.NET
                 return _data.ToArray();
             }
         }
-
-        #endregion
-
     }
-
 }

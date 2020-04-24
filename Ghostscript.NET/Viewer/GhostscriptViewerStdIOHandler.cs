@@ -31,27 +31,16 @@ namespace Ghostscript.NET.Viewer
 {
     internal class GhostscriptViewerStdIOHandler : GhostscriptStdIO
     {
-
-        #region Private variables
-
         private GhostscriptViewer _viewer;
         private GhostscriptViewerFormatHandler _formatHandler;
         private StringBuilder _outputMessages = new StringBuilder();
         private StringBuilder _errorMessages = new StringBuilder();
-
-        #endregion
-
-        #region Constructor
 
         public GhostscriptViewerStdIOHandler(GhostscriptViewer viewer, GhostscriptViewerFormatHandler formatHandler) : base(true, true, true)
         {
             _viewer = viewer;
             _formatHandler = formatHandler;
         }
-
-        #endregion
-
-        #region StdIn
 
         public override void StdIn(out string input, int count)
         {
@@ -62,10 +51,6 @@ namespace Ghostscript.NET.Viewer
                 _formatHandler.StdInput(out input, count);
             }
         }
-
-        #endregion
-
-        #region StdOut
 
         public override void StdOut(string output)
         {
@@ -92,10 +77,6 @@ namespace Ghostscript.NET.Viewer
             }
         }
 
-        #endregion
-
-        #region StdError
-
         public override void StdError(string error)
         {
             lock (_errorMessages)
@@ -120,8 +101,5 @@ namespace Ghostscript.NET.Viewer
                 }
             }
         }
-
-        #endregion
-
     }
 }

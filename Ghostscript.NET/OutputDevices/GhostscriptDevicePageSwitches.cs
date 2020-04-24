@@ -30,8 +30,6 @@ namespace Ghostscript.NET
 {
     public class GhostscriptDevicePageSwitches
     {
-        #region FixedMedia
-
         /// <summary>
         /// Causes the media size to be fixed after initialization, forcing pages of other sizes or orientations
         /// to be clipped. This may be useful when printing documents on a printer that can handle their requested
@@ -41,19 +39,11 @@ namespace Ghostscript.NET
         [GhostscriptSwitch("-dFIXEDMEDIA")]
         public GhostscriptOptionalSwitch? FixedMedia { get; set; }
 
-        #endregion
-
-        #region FixedResolution
-
         /// <summary>
         /// Causes the media resolution to be fixed similarly. -r automatically sets -dFIXEDRESOLUTION.
         /// </summary>
         [GhostscriptSwitch("-dFIXEDRESOLUTION")]
         public GhostscriptOptionalSwitch? FixedResolution { get; set; }
-
-        #endregion
-
-        #region PSFitPage
 
         /// <summary>
         /// The page size from the PostScript file setpagedevice operator, or one of the older statusdict page size 
@@ -63,10 +53,6 @@ namespace Ghostscript.NET
         /// </summary>
         [GhostscriptSwitch("-dPSFitPage")]
         public GhostscriptOptionalSwitch? PSFitPage { get; set; }
-
-        #endregion
-
-        #region Orient1
 
         /// <summary>
         /// Defines the meaning of the 0 and 1 orientation values for the setpage[params] compatibility operators. 
@@ -79,29 +65,17 @@ namespace Ghostscript.NET
         [GhostscriptSwitch("-dORIENT1={0}")]
         public GhostscriptBooleanSwitch? Orient1 { get; set; }
 
-        #endregion
-
-        #region DeviceWidthPoints
-
         /// <summary>
         /// Sets the initial page width to desired value respectively, specified in 1/72" units.
         /// </summary>
         [GhostscriptSwitch("-dDEVICEWIDTHPOINTS={0}")]
         public int? DeviceWidthPoints { get; set; }
 
-        #endregion
-
-        #region DeviceHeightPoints
-
         /// <summary>
         /// Sets the initial page height to desired value respectively, specified in 1/72" units.
         /// </summary>
         [GhostscriptSwitch("-dDEVICEHEIGHTPOINTS={0}")]
         public int? DeviceHeightPoints { get; set; }
-
-        #endregion
-
-        #region DefaultPaperSize
 
         /// <summary>
         /// This value will be used to replace the device default papersize ONLY if the default papersize for the device
@@ -111,17 +85,11 @@ namespace Ghostscript.NET
         [GhostscriptSwitch("-sDEFAULTPAPERSIZE={0}")]
         public string DefaultPaperSize { get; set; }
 
-        #endregion
-
-        #region FitPage
-
         /// <summary>
         /// This is a "convenience" operator that sets the various options to perform page fitting for specific file types.
         /// This option sets the -dEPSFitPage, -dPDFFitPage, and the -dFitPage options.
         /// </summary>
         [GhostscriptSwitch("-dFitPage")]
         public GhostscriptOptionalSwitch? FitPage { get; set; }
-
-        #endregion
     }
 }

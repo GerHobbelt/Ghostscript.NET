@@ -59,7 +59,7 @@ namespace Ghostscript.NET.Samples
                 switches.Add($"-dLastPage={pageTo}");
                 switches.Add($"-sPageList={pageFrom}-");            // overrides FirstPage and LastPage when used...
                 switches.Add("-sDEVICE=png16m");                    // PNG 24bit color output: https://ghostscript.com/doc/current/Devices.htm
-                switches.Add($"-r{dpi}");                              
+                switches.Add($"-r{dpi}");
                 switches.Add($"-dMaxBitmap={ /* assume A3+50% page size @ 4 bytes per pixel */ (int)(12 * 16 * dpi * dpi * 4 * 1.5) }");
                 if (highQualityAntiAliasedOutput)
                 {
@@ -93,7 +93,7 @@ namespace Ghostscript.NET.Samples
                 switches.Add("-c");
                 switches.Add("30000000 setvmthreshold");
 
-                switches.Add(@"-f");
+                switches.Add("-f");
                 switches.Add(ap /* inputFile -- just to make sure both parts of the GS command point at exactly the same file */);
 
                 if (!File.Exists(ap))

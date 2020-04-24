@@ -44,12 +44,13 @@ namespace Ghostscript.NET.Samples
 
             GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput();
 
-            string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
+            string h = gsPipedOutput.ClientHandle;
+            string outputPipeHandle = "%handle%" + int.Parse(h).ToString("X2");
 
             using (GhostscriptProcessor processor = new GhostscriptProcessor())
             {
                 //"C:\Program Files\gs\gs9.15\bin\gswin64.exe" -sDEVICE=tiff24nc -r300 -dNOPAUSE -dBATCH -sOutputFile="Invoice 1_%03ld.tiff" "Invoice 1.pdf"
-            
+
                 List<string> switches = new List<string>();
                 //switches.Add("-empty");
                 switches.Add("-dQUIET");

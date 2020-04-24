@@ -31,8 +31,6 @@ namespace Ghostscript.NET
 {
     internal class ImageMemoryHelper
     {
-        #region Set24bppRgbImageColor
-
         public unsafe static void Set24bppRgbImageColor(IntPtr image, int width, int height, byte r, byte g, byte b)
         {
             byte* ptr = (byte*)image;
@@ -49,17 +47,15 @@ namespace Ghostscript.NET
                     *ptr++ = b;
                 }
 
-                ptr+=padding;
+                ptr += padding;
             }
         }
 
-        #endregion
 
-        #region CopyImagePartFrom
 
         public static void CopyImagePartFrom(IntPtr src, IntPtr dest, int x, int y, int width, int height, int stride, int bytesPerPixel)
         {
-            int destStride = (((width * bytesPerPixel) + 3) & ~3); 
+            int destStride = (((width * bytesPerPixel) + 3) & ~3);
 
             int srcTop = y;
             int destTop = 0;
@@ -79,13 +75,11 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
 
-        #region CopyImagePartTo
 
         public static void CopyImagePartTo(IntPtr dest, IntPtr src, int x, int y, int width, int height, int stride, int bytesPerPixel)
         {
-            int partStride = (((width * bytesPerPixel) + 3) & ~3); 
+            int partStride = (((width * bytesPerPixel) + 3) & ~3);
 
             int destTop = y;
             int srcTop = 0;
@@ -105,9 +99,7 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
 
-        #region FlipImageVertically
 
         public static void FlipImageVertically(IntPtr src, IntPtr dest, int height, int stride)
         {
@@ -138,7 +130,5 @@ namespace Ghostscript.NET
 
             Marshal.Copy(buffer, 0, dest, size);
         }
-
-        #endregion
     }
 }

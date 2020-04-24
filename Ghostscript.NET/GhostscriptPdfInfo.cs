@@ -33,15 +33,11 @@ using Ghostscript.NET.Processor;
 
 namespace Ghostscript.NET
 {
-
     /// <summary>
     /// Class that helps us to get various information about the PDF file.
     /// </summary>
     public class GhostscriptPdfInfo
     {
-
-        #region GetInkCoverage - stream
-
         /// <summary>
         /// Returns Ink coverage for all pages.
         /// The result is ink coverage for the CMYK inks, separately for each single page (for RGB colors, it does a silent conversion to CMYK color space internally).
@@ -54,10 +50,6 @@ namespace Ghostscript.NET
             GhostscriptVersionInfo gvi = GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL);
             return GetInkCoverage(stream, 0, 0, gvi);
         }
-
-        #endregion
-
-        #region GetInkCoverage - stream, versionInfo
 
         /// <summary>
         /// Returns Ink coverage for all pages.
@@ -73,10 +65,6 @@ namespace Ghostscript.NET
             return GetInkCoverage(stream, 0, 0, versionInfo);
         }
 
-        #endregion
-
-        #region GetInkCoverage - stream, firstPage, lastPage
-
         /// <summary>
         /// Returns Ink coverage for specified page range.
         /// The result is ink coverage for the CMYK inks, separately for each single page (for RGB colors, it does a silent conversion to CMYK color space internally).
@@ -91,10 +79,6 @@ namespace Ghostscript.NET
             GhostscriptVersionInfo gvi = GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL);
             return GetInkCoverage(stream, firstPage, lastPage, gvi);
         }
-
-        #endregion
-
-        #region GetInkCoverage - stream, firstPage, lastPage, versionInfo
 
         /// <summary>
         /// Returns Ink coverage for specified page range.
@@ -123,10 +107,6 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
-        
-        #region GetInkCoverage - path
-
         /// <summary>
         /// Returns Ink coverage for all pages.
         /// The result is ink coverage for the CMYK inks, separately for each single page (for RGB colors, it does a silent conversion to CMYK color space internally).
@@ -139,10 +119,6 @@ namespace Ghostscript.NET
             GhostscriptVersionInfo gvi = GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL);
             return GetInkCoverage(path, 0, 0, gvi);
         }
-
-        #endregion
-
-        #region GetInkCoverage - path, versionInfo
 
         /// <summary>
         /// Returns Ink coverage for all pages.
@@ -158,10 +134,6 @@ namespace Ghostscript.NET
             return GetInkCoverage(path, 0, 0, versionInfo);
         }
 
-        #endregion
-
-        #region GetInkCoverage - path, firstPage, lastPage
-
         /// <summary>
         /// Returns Ink coverage for specified page range.
         /// The result is ink coverage for the CMYK inks, separately for each single page (for RGB colors, it does a silent conversion to CMYK color space internally).
@@ -176,10 +148,6 @@ namespace Ghostscript.NET
             GhostscriptVersionInfo gvi = GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL);
             return GetInkCoverage(path, firstPage, lastPage, gvi);
         }
-
-        #endregion
-
-        #region GetInkCoverage - path, firstPage, lastPage, versionInfo
 
         /// <summary>
         /// Returns Ink coverage for specified page range.
@@ -197,7 +165,8 @@ namespace Ghostscript.NET
 
             using (GhostscriptPipedOutput gsPipedOutput = new GhostscriptPipedOutput())
             {
-                string outputPipeHandle = "%handle%" + int.Parse(gsPipedOutput.ClientHandle).ToString("X2");
+                string h = gsPipedOutput.ClientHandle;
+                string outputPipeHandle = "%handle%" + int.Parse(h).ToString("X2");
 
                 List<string> switches = new List<string>();
                 //switches.Add("-empty");
@@ -205,12 +174,13 @@ namespace Ghostscript.NET
 
                 if (firstPage != 0 && lastPage != 0)
                 {
-                    switches.Add("-dFirstPage=" + firstPage.ToString());
-                    switches.Add("-dLastPage=" + lastPage.ToString());
+                    switches.Add($"-dFirstPage={ firstPage.ToString() }");
+                    switches.Add($"-dLastPage={ lastPage.ToString() }");
                 }
 
-                switches.Add("-o" + outputPipeHandle);
+                switches.Add($"-o{ outputPipeHandle }");
                 switches.Add("-sDEVICE=inkcov");
+                switches.Add("-f");
                 switches.Add(path);
 
                 GhostscriptProcessor proc = new GhostscriptProcessor(versionInfo, false);
@@ -229,7 +199,7 @@ namespace Ghostscript.NET
 
                 int pageNumber = firstPage == 0 ? 1 : firstPage;
 
-                foreach(string line in outputLines)
+                foreach (string line in outputLines)
                 {
                     GhostscriptPageInkCoverage pic = new GhostscriptPageInkCoverage();
                     pic.Page = pageNumber;
@@ -259,15 +229,12 @@ namespace Ghostscript.NET
             }
             else
             {
-                return null; 
+                return null;
             }
         }
 
-        #endregion
 
     }
-
-    #region GhostscriptPageInkCoverage
 
     /// <summary>
     /// Ink coverage.
@@ -299,7 +266,4 @@ namespace Ghostscript.NET
         /// </summary>
         public bool IsValid { get; set; }
     }
-
-    #endregion
-
 }

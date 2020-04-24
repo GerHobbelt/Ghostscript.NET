@@ -34,9 +34,6 @@ namespace Ghostscript.NET.Viewer.DSC
 {
     internal class DSCTokenizer : IDisposable
     {
-
-        #region Private variables
-
         private bool _disposed = false;
         private Stream _stream;
         private BufferedStream _bufferedStream;
@@ -44,20 +41,12 @@ namespace Ghostscript.NET.Viewer.DSC
         private bool _isUnicode = false;
         private bool _isLittleEndian = BitConverter.IsLittleEndian;
 
-        #endregion
-
-        #region Constructor - path
-
         public DSCTokenizer(string path)
         {
             _stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             _initiallyOwned = true;
             _bufferedStream = new BufferedStream(_stream);
         }
-
-        #endregion
-
-        #region Constructor - stream
 
         public DSCTokenizer(Stream stream, bool isUnicode, bool isLittleEndian)
         {
@@ -67,30 +56,16 @@ namespace Ghostscript.NET.Viewer.DSC
             _isLittleEndian = isLittleEndian;
         }
 
-        #endregion
-
-        #region Destructor
-
         ~DSCTokenizer()
         {
             this.Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -115,12 +90,6 @@ namespace Ghostscript.NET.Viewer.DSC
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region GetNextDSCKeywordToken
-
         public DSCToken GetNextDSCKeywordToken()
         {
             int c;
@@ -139,18 +108,10 @@ namespace Ghostscript.NET.Viewer.DSC
             return null;
         }
 
-        #endregion
-
-        #region GetNextDSCValueToken
-
         public DSCToken GetNextDSCValueToken(DSCTokenEnding end)
         {
             return this.ReadUntil(string.Empty, end);
         }
-
-        #endregion
-
-        #region ReadUntil
 
         private DSCToken ReadUntil(string prefix, DSCTokenEnding end)
         {
@@ -195,10 +156,6 @@ namespace Ghostscript.NET.Viewer.DSC
             return null;
         }
 
-        #endregion
-
-        #region ReadContent
-
         public string ReadContent(int start, int count)
         {
             long bkpPos = _bufferedStream.Position;
@@ -212,18 +169,10 @@ namespace Ghostscript.NET.Viewer.DSC
             return System.Text.Encoding.UTF8.GetString(buffer);
         }
 
-        #endregion
-
-        #region FileSize
-
         public long FileSize
         {
             get { return _bufferedStream.Length; }
         }
-
-        #endregion
-
-        #region ReadByte
 
         private int ReadChar()
         {
@@ -233,13 +182,13 @@ namespace Ghostscript.NET.Viewer.DSC
             }
 
             if (_isUnicode)
-            { 
+            {
                 byte[] b = new byte[2];
 
                 _bufferedStream.Read(b, 0, 2);
 
-                if(_isLittleEndian)
-                { 
+                if (_isLittleEndian)
+                {
                     return (int)(b[0] | b[1] << 8);
                 }
                 else
@@ -252,8 +201,5 @@ namespace Ghostscript.NET.Viewer.DSC
                 return _bufferedStream.ReadByte();
             }
         }
-
-        #endregion
     }
-
 }

@@ -35,18 +35,11 @@ namespace Ghostscript.NET
     /// </summary>
     public class GhostscriptLibrary : IDisposable
     {
-
-        #region Private variables
-
         private bool _disposed = false;
         private DynamicNativeLibrary _library;
         private GhostscriptVersionInfo _version;
         private bool _loadedFromMemory = false;
         private int _revision;
-
-        #endregion
-
-        #region Constructor - buffer
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptLibrary class
@@ -77,21 +70,13 @@ namespace Ghostscript.NET
             this.Initialize();
         }
 
-        #endregion
-
-        #region Constructor - version
-
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptLibrary class
         /// from the GhostscriptVersionInfo object.
         /// </summary>
         /// <param name="version">GhostscriptVersionInfo instance that tells which Ghostscript library to use.</param>
-        public GhostscriptLibrary(GhostscriptVersionInfo version) : this(version, false) 
+        public GhostscriptLibrary(GhostscriptVersionInfo version) : this(version, false)
         { }
-
-        #endregion
-
-        #region Constructor - version, fromMemory
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptLibrary class
@@ -142,20 +127,10 @@ namespace Ghostscript.NET
             this.Initialize();
         }
 
-        #endregion
-
-        #region Destructor
-
         ~GhostscriptLibrary()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         /// <summary>
         /// Releases all resources used by the Ghostscript.NET.GhostscriptLibrary instance.
@@ -166,10 +141,6 @@ namespace Ghostscript.NET
             GC.SuppressFinalize(this);
         }
 
-        #endregion
-
-        #region Dispose - disposing
-
         /// <summary>
         /// Releases all resources used by the Ghostscript.NET.GhostscriptLibrary instance.
         /// </summary>
@@ -179,19 +150,13 @@ namespace Ghostscript.NET
             {
                 if (disposing)
                 {
-                    _library.Dispose(); 
+                    _library.Dispose();
                     _library = null;
                 }
 
                 _disposed = true;
             }
         }
-
-        #endregion
-
-        #endregion
-
-        #region Ghostscript functions
 
         public gsapi_revision @gsapi_revision = null;
         public gsapi_new_instance @gsapi_new_instance = null;
@@ -209,10 +174,6 @@ namespace Ghostscript.NET
         public gsapi_run_file @gsapi_run_file = null;
         public gsapi_exit @gsapi_exit = null;
 
-        #endregion 
-
-        #region Initialize
-
         /// <summary>
         /// Get the native library symbols and map them to the appropriate functions/delegates.
         /// </summary>
@@ -221,7 +182,7 @@ namespace Ghostscript.NET
             string symbolMappingError = "Delegate of an exported function couldn't be created for symbol '{0}'";
 
             this.gsapi_revision = _library.GetDelegateForFunction<gsapi_revision>("gsapi_revision");
-            
+
             if (this.gsapi_revision == null)
                 throw new GhostscriptException(string.Format(symbolMappingError, "gsapi_revision"));
 
@@ -279,7 +240,7 @@ namespace Ghostscript.NET
             if (this.gsapi_run_string_continue == null)
                 throw new GhostscriptException(string.Format(symbolMappingError, "gsapi_run_string_continue"));
 
-            this.gsapi_run_string_end = _library.GetDelegateForFunction< gsapi_run_string_end>("gsapi_run_string_end");
+            this.gsapi_run_string_end = _library.GetDelegateForFunction<gsapi_run_string_end>("gsapi_run_string_end");
 
             if (this.gsapi_run_string_end == null)
                 throw new GhostscriptException(string.Format(symbolMappingError, "gsapi_run_string_end"));
@@ -306,10 +267,6 @@ namespace Ghostscript.NET
 
         }
 
-        #endregion
-
-        #region ThrowIncompatibileNativeGhostscriptLibraryException
-
         /// <summary>
         /// Throws friendly gsdll incompatibility message.
         /// </summary>
@@ -322,18 +279,10 @@ namespace Ghostscript.NET
                                     "32bit native Ghostscript library can be downloaded from http://www.ghostscript.com/download/gsdnld.html"));
         }
 
-        #endregion
-
-        #region Revision
-
         public int Revision
         {
             get { return _revision; }
         }
-
-        #endregion
-
-        #region is_gsapi_set_arg_encoding
 
         public bool is_gsapi_set_arg_encoding_supported
         {
@@ -349,8 +298,5 @@ namespace Ghostscript.NET
                 }
             }
         }
-
-        #endregion
-
     }
 }

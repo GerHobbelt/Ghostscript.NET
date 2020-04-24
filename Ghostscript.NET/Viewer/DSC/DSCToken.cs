@@ -30,20 +30,12 @@ using System;
 
 namespace Ghostscript.NET.Viewer.DSC
 {
-
     internal class DSCToken
     {
-
-        #region Private variables
-
         private long _startPosition;
         private long _length;
         private string _text;
         private DSCTokenEnding _ending;
-
-        #endregion
-
-        #region StartPosition
 
         public long StartPosition
         {
@@ -51,19 +43,11 @@ namespace Ghostscript.NET.Viewer.DSC
             set { _startPosition = value; }
         }
 
-        #endregion
-
-        #region Length
-
         public long Length
         {
             get { return _length; }
             set { _length = value; }
         }
-
-        #endregion
-
-        #region Text
 
         public string Text
         {
@@ -71,26 +55,15 @@ namespace Ghostscript.NET.Viewer.DSC
             set { _text = value; }
         }
 
-        #endregion
-
-        #region Ending
-
         public DSCTokenEnding Ending
         {
             get { return _ending; }
             set { _ending = value; }
         }
 
-        #endregion
-
-        #region ToString
-
         public override string ToString()
         {
             return _text;
         }
-
-        #endregion
-
     }
 }

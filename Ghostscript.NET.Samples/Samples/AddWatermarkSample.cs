@@ -102,7 +102,7 @@ namespace Ghostscript.NET.Samples
             switches.Add("-dNOPAUSE");
             switches.Add("-dNOPAUSE");
             switches.Add("-sDEVICE=pdfwrite");
-            switches.Add("-sOutputFile=" + outputFile);
+            switches.Add($"-sOutputFile={ outputFile }");
             switches.Add("-c");
             switches.Add(POSTSCRIPT_APPEND_WATERMARK);
             switches.Add("-f");
@@ -118,6 +118,5 @@ namespace Ghostscript.NET.Samples
             // show new pdf
             Process.Start(outputFile);
         }
-
     }
 }

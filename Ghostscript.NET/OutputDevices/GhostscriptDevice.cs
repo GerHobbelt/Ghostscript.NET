@@ -32,18 +32,11 @@ using Ghostscript.NET.Processor;
 
 namespace Ghostscript.NET
 {
-
-    #region GhostscriptOptionalSwitch
-
     public enum GhostscriptOptionalSwitch
     {
         Include,
         Omit
     }
-
-    #endregion
-
-    #region GhostscriptBooleanSwitch
 
     public enum GhostscriptBooleanSwitch
     {
@@ -53,18 +46,10 @@ namespace Ghostscript.NET
         False
     }
 
-    #endregion
 
     public class GhostscriptDevice
     {
-
-        #region Private variables
-
         private object _device;
-
-        #endregion
-
-        #region Constructor
 
         public GhostscriptDevice()
         {
@@ -76,10 +61,6 @@ namespace Ghostscript.NET
             this.Other = new GhostscriptDeviceOtherSwitches();
         }
 
-        #endregion
-
-        #region Device
-
         [GhostscriptSwitch("-sDEVICE={0}")]
         public virtual object Device
         {
@@ -87,57 +68,21 @@ namespace Ghostscript.NET
             set { _device = value; }
         }
 
-        #endregion
-
-        #region PostScript
-
         public string PostScript { get; set; }
-        
-        #endregion
-
-        #region InputFiles
 
         public List<string> InputFiles { get; internal set; }
 
-        #endregion
-
-        #region CustomSwitches
-
         public List<string> CustomSwitches { get; internal set; }
-
-        #endregion
-
-        #region OutputPath
 
         public string OutputPath { get; set; }
 
-        #endregion
-
-        #region Page
-
         public GhostscriptDevicePageSwitches Page { get; internal set; }
-
-        #endregion
-
-        #region Pdf
 
         public GhostscriptDevicePdfSwitches Pdf { get; internal set; }
 
-        #endregion
-
-        #region Interaction
-
         public GhostscriptDeviceInteractionSwitches Interaction { get; internal set; }
 
-        #endregion
-
-        #region Other
-
         public GhostscriptDeviceOtherSwitches Other { get; internal set; }
-
-        #endregion
-
-        #region GetSwitches
 
         public string[] GetSwitches()
         {
@@ -217,7 +162,7 @@ namespace Ghostscript.NET
                 parameters.Add(customSwitch);
             }
 
-            parameters.Add("-sOutputFile=" + this.OutputPath);
+            parameters.Add($"-sOutputFile={ this.OutputPath }");
             if (!string.IsNullOrWhiteSpace(this.PostScript))
             {
                 parameters.Add("-c");
@@ -234,29 +179,17 @@ namespace Ghostscript.NET
             return parameters.ToArray();
         }
 
-        #endregion
-
-        #region Process
-
         public void Process()
         {
             this.Process(null);
         }
 
-        #endregion
-
-        #region Process - stdIO_callback
-
         public void Process(GhostscriptStdIO stdIO_callback)
         {
-            this.Process(GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), 
+            this.Process(GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL),
                          true,
-                         stdIO_callback); 
+                         stdIO_callback);
         }
-
-        #endregion
-
-        #region Process - ghostscriptVersion, fromMemory, stdIO_callback
 
         public void Process(GhostscriptVersionInfo ghostscriptVersion, bool fromMemory, GhostscriptStdIO stdIO_callback)
         {
@@ -270,8 +203,5 @@ namespace Ghostscript.NET
                 processor.StartProcessing(this.GetSwitches(), stdIO_callback);
             }
         }
-
-        #endregion
-
     }
 }

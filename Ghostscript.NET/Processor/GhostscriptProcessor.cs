@@ -33,13 +33,7 @@ namespace Ghostscript.NET.Processor
 {
     public class GhostscriptProcessor : IDisposable
     {
-        #region Private constants
-
         private readonly char[] EMPTY_SPACE_SPLIT = new char[] { ' ', '-' };
-
-        #endregion
-
-        #region Private variables
 
         private bool _disposed = false;
         private bool _processorOwnsLibrary = true;
@@ -53,16 +47,12 @@ namespace Ghostscript.NET.Processor
         private bool _isRunning = false;
         private bool _stopProcessing = false;
 
-        #endregion
-
-        #region Public events
+        // Public events
 
         public event GhostscriptProcessorEventHandler Started;
         public event GhostscriptProcessorProcessingEventHandler Processing;
         public event GhostscriptProcessorErrorEventHandler Error;
         public event GhostscriptProcessorEventHandler Completed;
-
-        #region Started
 
         protected void OnStarted(GhostscriptProcessorEventArgs e)
         {
@@ -72,10 +62,6 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region OnProcessing
-
         protected void OnProcessing(GhostscriptProcessorProcessingEventArgs e)
         {
             if (this.Processing != null)
@@ -83,10 +69,6 @@ namespace Ghostscript.NET.Processor
                 this.Processing(this, e);
             }
         }
-
-        #endregion
-
-        #region OnError
 
         protected void OnError(GhostscriptProcessorErrorEventArgs e)
         {
@@ -96,10 +78,6 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region OnCompleted
-
         protected void OnCompleted(GhostscriptProcessorEventArgs e)
         {
             if (this.Completed != null)
@@ -108,19 +86,9 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Constructor
-
         public GhostscriptProcessor()
             : this(GhostscriptVersionInfo.GetLastInstalledVersion(GhostscriptLicense.GPL | GhostscriptLicense.AFPL, GhostscriptLicense.GPL), false)
         { }
-
-        #endregion
-
-        #region Constructor - library
 
         public GhostscriptProcessor(GhostscriptLibrary library, bool processorOwnsLibrary = false)
         {
@@ -131,7 +99,7 @@ namespace Ghostscript.NET.Processor
             _processorOwnsLibrary = processorOwnsLibrary;
             _gs = library;
         }
-        
+
         public GhostscriptProcessor(byte[] library)
         {
             if (library == null)
@@ -142,16 +110,8 @@ namespace Ghostscript.NET.Processor
             _gs = new GhostscriptLibrary(library);
         }
 
-        #endregion
-
-        #region Constructor - version
-
         public GhostscriptProcessor(GhostscriptVersionInfo version) : this(version, false)
         { }
-
-        #endregion
-
-        #region Constructor - version, fromMemory
 
         public GhostscriptProcessor(GhostscriptVersionInfo version, bool fromMemory)
         {
@@ -163,30 +123,16 @@ namespace Ghostscript.NET.Processor
             _gs = new GhostscriptLibrary(version, fromMemory);
         }
 
-        #endregion
-
-        #region Destructor
-
         ~GhostscriptProcessor()
         {
             Dispose(false);
         }
-
-        #endregion
-
-        #region Dispose
-
-        #region Dispose
 
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        #endregion
-
-        #region Dispose - disposing
 
         protected virtual void Dispose(bool disposing)
         {
@@ -204,29 +150,15 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #endregion
-
-        #region Process - device, stdIO_callback
-
         public void Process(GhostscriptDevice device, GhostscriptStdIO stdIO_callback = null)
         {
             this.StartProcessing(device, stdIO_callback);
         }
 
-        #endregion
-
-        #region Process - args, stdIO_callback
-
         public void Process(string[] args, GhostscriptStdIO stdIO_callback = null)
         {
             this.StartProcessing(args, stdIO_callback);
         }
-
-        #endregion
-
-        #region StartProcessing - device, stdIO_callback
 
         public void StartProcessing(GhostscriptDevice device, GhostscriptStdIO stdIO_callback = null)
         {
@@ -237,10 +169,6 @@ namespace Ghostscript.NET.Processor
 
             this.StartProcessing(device.GetSwitches(), stdIO_callback);
         }
-
-        #endregion
-
-        #region StartProcessing - args, stdIO_callback
 
         /// <summary>
         /// Run Ghostscript.
@@ -280,8 +208,8 @@ namespace Ghostscript.NET.Processor
                 _stdIO_Callback = stdIO_callback;
 
                 _internalStdIO_Callback = new GhostscriptProcessorInternalStdIOHandler(
-                                                new StdInputEventHandler(OnStdIoInput), 
-                                                new StdOutputEventHandler(OnStdIoOutput), 
+                                                new StdInputEventHandler(OnStdIoInput),
+                                                new StdOutputEventHandler(OnStdIoOutput),
                                                 new StdErrorEventHandler(OnStdIoError));
 
                 int rc_stdio = _gs.gsapi_set_stdio(instance,
@@ -296,7 +224,6 @@ namespace Ghostscript.NET.Processor
                 if (ierrors.IsError(rc_pool))
                 {
                     throw new GhostscriptAPICallException("gsapi_set_poll", rc_pool);
-
                 }
 
                 if (ierrors.IsError(rc_stdio))
@@ -353,18 +280,10 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region StopProcessing
-
         public void StopProcessing()
         {
             _stopProcessing = true;
         }
-
-        #endregion
-
-        #region Pool
 
         private int Pool(IntPtr handle)
         {
@@ -378,10 +297,6 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region OnStdIoInput
-
         private void OnStdIoInput(out string input, int count)
         {
             if (_stdIO_Callback != null)
@@ -393,10 +308,6 @@ namespace Ghostscript.NET.Processor
                 input = string.Empty;
             }
         }
-
-        #endregion
-
-        #region OnStdIoOutput
 
         private void OnStdIoOutput(string output)
         {
@@ -423,10 +334,6 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region OnStdIoError
-
         private void OnStdIoError(string error)
         {
             lock (_errorMessages)
@@ -452,10 +359,6 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region ProcessOutputLine
-
         private void ProcessOutputLine(string line)
         {
             // e.g. "Processing pages 1-50."
@@ -475,34 +378,19 @@ namespace Ghostscript.NET.Processor
             }
         }
 
-        #endregion
-
-        #region ProcessErrorLine
-
         private void ProcessErrorLine(string line)
         {
             this.OnError(new GhostscriptProcessorErrorEventArgs(line));
         }
-
-        #endregion
-
-        #region IsRunning
 
         public bool IsRunning
         {
             get { return _isRunning; }
         }
 
-        #endregion
-
-        #region IsStopping
-
         public bool IsStopping
         {
             get { return _isRunning && _stopProcessing; }
         }
-
-        #endregion
-
     }
 }

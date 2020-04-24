@@ -29,22 +29,16 @@ using System.Drawing;
 
 namespace Ghostscript.NET.Viewer
 {
-    #region delegate GhostscriptViewerViewEventHandler
-
     public delegate void GhostscriptViewerViewEventHandler(object sender, GhostscriptViewerViewEventArgs e);
 
-    #endregion
 
     public class GhostscriptViewerViewEventArgs : EventArgs
     {
-        #region Private variables
 
         private GhostscriptViewerImage _image;
         private RectangleF _mediaBox;
 
-        #endregion
 
-        #region Constructor
 
         internal GhostscriptViewerViewEventArgs(GhostscriptViewerImage image, Rectangle mediaBox)
         {
@@ -52,24 +46,18 @@ namespace Ghostscript.NET.Viewer
             _mediaBox = mediaBox;
         }
 
-        #endregion
 
-        #region Image
 
         public Bitmap Image
         {
             get { return _image.Bitmap; }
         }
 
-        #endregion
 
-        #region MediaBox
 
         public RectangleF MediaBox
         {
             get { return _mediaBox; }
         }
-
-        #endregion
     }
 }

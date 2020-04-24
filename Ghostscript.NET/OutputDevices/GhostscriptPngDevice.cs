@@ -29,9 +29,6 @@ using System.Drawing;
 
 namespace Ghostscript.NET
 {
-
-    #region GhostscriptPngDeviceType
-
     public enum GhostscriptPngDeviceType
     {
         /// <summary>
@@ -71,10 +68,6 @@ namespace Ghostscript.NET
         PngMonoD
     }
 
-    #endregion
-
-    #region GhostscriptPngDeviceMinFeatureSize
-
     public enum GhostscriptPngDeviceMinFeatureSize
     {
         [GhostscriptSwitchValue("0")]
@@ -89,27 +82,15 @@ namespace Ghostscript.NET
         V_4
     }
 
-    #endregion
 
     public class GhostscriptPngDevice : GhostscriptImageDevice
     {
-
-        #region Constructor
-
         public GhostscriptPngDevice() : this(GhostscriptPngDeviceType.Png16m) { }
-
-        #endregion
-
-        #region Constructor - deviceType
 
         public GhostscriptPngDevice(GhostscriptPngDeviceType deviceType)
         {
             this.Device = deviceType;
         }
-
-        #endregion
-
-        #region Device
 
         public new GhostscriptPngDeviceType Device
         {
@@ -123,30 +104,14 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
-
-        #region DownScaleFactor
-
         [GhostscriptSwitch("-dDownScaleFactor={0}")]
         public int? DownScaleFactor { get; set; }
-
-        #endregion
-
-        #region MinFeatureSize
 
         [GhostscriptSwitch("-dMinFeatureSize={0}")]
         public GhostscriptPngDeviceMinFeatureSize? MinFeatureSize { get; set; }
 
-        #endregion
-
-        #region BackgroundColor
-
         [GhostscriptSwitch("-dBackgroundColor={0}")]
         public Color? BackgroundColor { get; set; }
-
-        #endregion
-
-        #region Process
 
         public static void Process(GhostscriptPngDeviceType pngDeviceType, string[] inputFiles, string outputPath, GhostscriptStdIO stdIO_callback)
         {
@@ -155,9 +120,5 @@ namespace Ghostscript.NET
             dev.OutputPath = outputPath;
             dev.Process(stdIO_callback);
         }
-
-        #endregion
-
     }
-
 }

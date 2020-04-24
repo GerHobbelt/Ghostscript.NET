@@ -37,8 +37,6 @@ namespace Ghostscript.NET.Viewer
 {
     internal class GhostscriptViewerPsFormatHandler : GhostscriptViewerFormatHandler
     {
-        #region Private constants
-
         private const string DSC_PAGES = "%%Pages:";
         private const string DSC_PAGE = "%%Page:";
         private const string DSC_BOUNDINGBOX = "%%BoundingBox:";
@@ -46,23 +44,17 @@ namespace Ghostscript.NET.Viewer
         private const string DSC_TRAILER = "%%Trailer";
         private const string DSC_EOF = "%%EOF";
 
-        #endregion
 
-        #region Private variables
 
         private DSCTokenizer _tokenizer;
         private Dictionary<int, DSCToken> _pageTokens = new Dictionary<int, DSCToken>();
         private DSCToken _lastPageEnding;
 
-        #endregion
 
-        #region Constructor
 
         public GhostscriptViewerPsFormatHandler(GhostscriptViewer viewer) : base(viewer) { }
 
-        #endregion
 
-        #region Dispose
 
         protected override void Dispose(bool disposing)
         {
@@ -78,63 +70,49 @@ namespace Ghostscript.NET.Viewer
             base.Dispose(disposing);
         }
 
-        #endregion
 
-        #region Initialize
 
         public override void Initialize()
         {
-            
+
         }
 
-        #endregion
 
-        #region Open
 
         public override void Open(string filePath)
         {
             this.OpenPsFile(filePath);
         }
 
-        #endregion
 
-        #region StdInput
 
         public override void StdInput(out string input, int count)
         {
             input = string.Empty;
         }
 
-        #endregion
 
-        #region StdOutput
 
         public override void StdOutput(string message)
         {
-            
+
         }
 
-        #endregion
 
-        #region StdError
 
         public override void StdError(string message)
         {
-            
+
         }
 
-        #endregion
 
-        #region InitPage
 
         public override void InitPage(int pageNumber)
         {
-            
+
         }
 
-        #endregion
 
-        #region ShowPage
 
         public override void ShowPage(int pageNumber)
         {
@@ -142,7 +120,7 @@ namespace Ghostscript.NET.Viewer
 
             DSCToken pageToken = _pageTokens[pageNumber];
             DSCToken pageEndToken;
-            
+
             if (pageNumber == _pageTokens.Count)
             {
                 pageEndToken = _lastPageEnding;
@@ -158,9 +136,7 @@ namespace Ghostscript.NET.Viewer
             this.Execute(pageContent);
         }
 
-        #endregion
 
-        #region OpenPsFile
 
         private void OpenPsFile(string path)
         {
@@ -178,7 +154,7 @@ namespace Ghostscript.NET.Viewer
                     case DSC_PAGES:        // %%Pages: <numpages> | (atend)
                         {
                             token = _tokenizer.GetNextDSCValueToken(DSCTokenEnding.Whitespace | DSCTokenEnding.LineEnd);
-                            
+
                             // check if we need to ignore this comment because it's set at the end of the file
                             if (!string.IsNullOrWhiteSpace(token.Text) && token.Text != "(atend)" && !token.Text.StartsWith("%"))
                             {
@@ -217,7 +193,7 @@ namespace Ghostscript.NET.Viewer
                             // value of the line
 
                             DSCToken pageNumberToken;
-                            
+
                             // loop through each comment value
                             while ((pageNumberToken = _tokenizer.GetNextDSCValueToken(DSCTokenEnding.Whitespace | DSCTokenEnding.LineEnd)) != null)
                             {
@@ -291,7 +267,5 @@ namespace Ghostscript.NET.Viewer
 
             this.Execute(hpdContent);
         }
-
-        #endregion
     }
 }
