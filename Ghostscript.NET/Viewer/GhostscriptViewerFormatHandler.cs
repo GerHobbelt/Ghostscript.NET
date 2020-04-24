@@ -73,9 +73,22 @@ namespace Ghostscript.NET.Viewer
 
         public abstract void Initialize();
         public abstract void Open(string filePath);
-        public abstract void StdInput(out string input, int count);
-        public abstract void StdOutput(string message);
-        public abstract void StdError(string message);
+
+        public virtual void StdInput(out string input, int count)
+        {
+            input = string.Empty;
+        }
+
+        public virtual void StdOutput(string message)
+        {
+
+        }
+
+        public virtual void StdError(string message)
+        {
+
+        }
+
         public abstract void InitPage(int pageNumber);
         public abstract void ShowPage(int pageNumber);
 

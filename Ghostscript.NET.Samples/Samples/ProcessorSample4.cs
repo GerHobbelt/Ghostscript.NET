@@ -41,7 +41,6 @@ namespace Ghostscript.NET.Samples
             // gs -dSAFER -dBATCH -dNOPAUSE -dNOPROMPT --permit-file-read=W:/Projects/sites/library.visyond.gov/80/lib/CS/Ghostscript.NET/test/ -c '(W:/Projects/sites/library.visyond.gov/80/lib/CS/Ghostscript.NET/test/test.pdf) (r) file runpdfbegin pdfpagecount = quit'
 
             string inputFile = @"../../../test/test.pdf";
-            string outputFile = @"../../../test/output\page-%04d.png";
 
             GhostscriptStdIO stdioCb = new GhostscriptViewerStdIOHandler();
 
@@ -101,37 +100,9 @@ namespace Ghostscript.NET.Samples
 
     internal class GhostscriptViewerStdIOHandler : GhostscriptStdIO
     {
-        private StringBuilder _outputMessages = new StringBuilder();
-        private StringBuilder _errorMessages = new StringBuilder();
-
-        internal GhostscriptViewerStdIOHandler() : base(true, true, true)
+        public GhostscriptViewerStdIOHandler() : base(true, true, true)
         {
-        }
 
-        public override void StdIn(out string input, int count)
-        {
-            input = string.Empty;
-        }
-
-        public override void StdOut(string output)
-        {
-            lock (_outputMessages)
-            {
-                _outputMessages.Append(output);
-            }
-        }
-
-        public override void StdError(string error)
-        {
-            lock (_errorMessages)
-            {
-                _errorMessages.Append(error);
-            }
-        }
-
-        public override string ToString()
-        {
-            return $"STDOUT:\n{_outputMessages}\nSTDERR:\n{_errorMessages}";
         }
     }
 }

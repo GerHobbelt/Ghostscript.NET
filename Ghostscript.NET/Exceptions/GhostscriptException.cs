@@ -31,14 +31,17 @@ namespace Ghostscript.NET
     public class GhostscriptException : Exception
     {
         private int _code = ierrors.e_UnspecifiedError;
+        private string _GhostScriptOutput;
 
-        public GhostscriptException(string message) : base(message)
+        public GhostscriptException(string message, GhostscriptStdIO stdIOhandler = null) : base(message)
         {
+            _GhostScriptOutput = stdIOhandler?.GetOutput() ?? string.Empty;
         }
 
-        public GhostscriptException(string message, int code) : base(message)
+        public GhostscriptException(string message, int code, GhostscriptStdIO stdIOhandler = null) : base(message)
         {
             _code = code;
+            _GhostScriptOutput = stdIOhandler?.GetOutput() ?? string.Empty;
         }
 
         public int Code
@@ -51,6 +54,14 @@ namespace Ghostscript.NET
             get 
             {
                 return ierrors.GetErrorName(_code);
+            }
+        }
+
+        public string GhostScriptOutput
+        {
+            get
+            {
+                return _GhostScriptOutput;
             }
         }
     }

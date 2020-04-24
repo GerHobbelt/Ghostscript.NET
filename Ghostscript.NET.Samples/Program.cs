@@ -126,6 +126,10 @@ namespace Ghostscript.NET.Samples
                 catch (GhostscriptException ex)
                 {
                     Console.WriteLine($"Sample {choice}: GhostScript Error {ex.Code} ({ex.CodeName ?? "<unknown>"}) --> Exception: {ex}");
+                    if (!String.IsNullOrEmpty(ex.GhostScriptOutput))
+                    {
+                        Console.WriteLine($"\n*** GS stdio output: ***\n{ ex.GhostScriptOutput }\n\n");
+                    }
                 }
                 catch (Exception ex)
                 {

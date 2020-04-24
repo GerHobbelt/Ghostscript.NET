@@ -35,22 +35,14 @@ namespace Ghostscript.NET
     /// </summary>
     public abstract class GhostscriptStdIO
     {
-
-        #region Internal variables
+        // Internal variables
 
         internal gsapi_stdio_callback _std_in = null;
         internal gsapi_stdio_callback _std_out = null;
         internal gsapi_stdio_callback _std_err = null;
 
-        #endregion
-
-        #region Private variables
-
         private StringBuilder _input = new StringBuilder();
-
-        #endregion
-
-        #region Constructor
+        private StringBuilder _outputMessages4ErrMsgs = new StringBuilder();
 
         /// <summary>
         /// Initializes a new instance of the Ghostscript.NET.GhostscriptStdIO class.
@@ -82,10 +74,6 @@ namespace Ghostscript.NET
             }
         }
 
-        #endregion
-
-        #region gs_std_in
-        
         /// <summary>
         /// Standard input handler.
         /// </summary>
@@ -115,7 +103,7 @@ namespace Ghostscript.NET
                     return 0;
                 }
             }
-           
+
             // check if the stdin expects more data than we have at the moment
             if (count > _input.Length)
             {
@@ -150,10 +138,6 @@ namespace Ghostscript.NET
             return position;
         }
 
-        #endregion
-
-        #region gs_std_out
-
         /// <summary>
         /// Handles standard output.
         /// </summary>
@@ -169,16 +153,14 @@ namespace Ghostscript.NET
             // replace line feeds with the standard windows new line
             output = output.Replace("\n", "\r\n");
 
+            Append(output);
+
             // send read out data to the handler owner
             this.StdOut(output);
 
             // return number of bytes read
             return count;
         }
-
-        #endregion
-
-        #region gs_std_err
 
         /// <summary>
         /// Handles errors.
@@ -195,6 +177,8 @@ namespace Ghostscript.NET
             // replace line feeds with the standard windows new line
             errors = errors.Replace("\n", "\r\n");
 
+            Append(errors);
+
             // send read out data to the handler owner
             this.StdError(errors);
 
@@ -202,30 +186,63 @@ namespace Ghostscript.NET
             return count;
         }
 
-        #endregion
-
-        #region Abstract functions
-
         /// <summary>
         /// Abstract standard input method.
         /// </summary>
         /// <param name="input">Input data.</param>
         /// <param name="count">Expected size of the input data.</param>
-        public abstract void StdIn(out string input, int count);
+        public virtual void StdIn(out string input, int count)
+        {
+            input = string.Empty;
+        }
 
         /// <summary>
         /// Abstract standard output method.
         /// </summary>
         /// <param name="output">Output data.</param>
-        public abstract void StdOut(string output);
+        public virtual void StdOut(string output)
+        {
+        }
 
         /// <summary>
         /// Abstract standard error method.
         /// </summary>
         /// <param name="error">Error data.</param>
-        public abstract void StdError(string error);
+        public virtual void StdError(string error)
+        {
+        }
 
-        #endregion
 
+        public string GetOutput()
+        {
+            lock (_outputMessages4ErrMsgs)
+            {
+                return _outputMessages4ErrMsgs.ToString();
+            }
+        }
+
+        public void ClearOutput()
+        {
+            lock (_outputMessages4ErrMsgs)
+            {
+                _outputMessages4ErrMsgs.Clear();
+            }
+        }
+
+        public void Append(string msg)
+        {
+            lock (_outputMessages4ErrMsgs)
+            {
+                _outputMessages4ErrMsgs.Append(msg);
+            }
+        }
+
+        public void AppendLine(string msg)
+        {
+            lock (_outputMessages4ErrMsgs)
+            {
+                _outputMessages4ErrMsgs.AppendLine(msg);
+            }
+        }
     }
 }

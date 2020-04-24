@@ -66,7 +66,7 @@ namespace Ghostscript.NET.Samples
                 switches.Add("-f");
                 switches.Add(inputFile);
 
-                // if you dont want to handle stdio, you can pass 'null' value as the last parameter
+                // if you don't want to handle stdio, you can pass 'null' value as the last parameter
                 LogStdio stdio = new LogStdio();
                 processor.StartProcessing(switches.ToArray(), stdio);
             }

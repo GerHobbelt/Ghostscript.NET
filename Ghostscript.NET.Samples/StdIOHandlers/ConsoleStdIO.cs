@@ -44,11 +44,13 @@ namespace Ghostscript.NET.Samples
 
         public override void StdOut(string output)
         {
+            base.StdOut(output);
             Console.Write(output);
         }
 
         public override void StdError(string error)
         {
+            base.StdError(error);
             Console.Write(error);
         }
     }

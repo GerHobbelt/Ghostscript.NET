@@ -150,7 +150,7 @@ namespace Ghostscript.NET.Interpreter
 
             if (ierrors.IsError(rc_ins))
             {
-                throw new GhostscriptAPICallException("gsapi_new_instance", rc_ins);
+                throw new GhostscriptAPICallException("gsapi_new_instance", rc_ins, _stdIO);
             }
         }
 
@@ -168,15 +168,12 @@ namespace Ghostscript.NET.Interpreter
                 if (_stdIO == null)
                 {
                     // GSAPI: set the stdio callback handlers
-                    int rc_stdio = _gs.gsapi_set_stdio(_gs_instance,
-                                            stdIO != null ? stdIO._std_in : null,
-                                            stdIO != null ? stdIO._std_out : null,
-                                            stdIO != null ? stdIO._std_err : null);
+                    int rc_stdio = _gs.gsapi_set_stdio(_gs_instance, stdIO._std_in, stdIO._std_out, stdIO._std_err);
 
                     // check if the stdio callback handlers are set correctly
                     if (ierrors.IsError(rc_stdio))
                     {
-                        throw new GhostscriptAPICallException("gsapi_set_stdio", rc_stdio);
+                        throw new GhostscriptAPICallException("gsapi_set_stdio", rc_stdio, stdIO);
                     }
 
                     // remember it
@@ -206,7 +203,7 @@ namespace Ghostscript.NET.Interpreter
                     // check if the display callback handler is set correctly
                     if (ierrors.IsError(rc_dev))
                     {
-                        throw new GhostscriptAPICallException("gsapi_set_display_callback", rc_dev);
+                        throw new GhostscriptAPICallException("gsapi_set_display_callback", rc_dev, _stdIO);
                     }
 
                     // remember it
@@ -245,7 +242,7 @@ namespace Ghostscript.NET.Interpreter
             // check if the interpreter is initialized correctly
             if (ierrors.IsError(rc_init))
             {
-                throw new GhostscriptAPICallException("gsapi_init_with_args", rc_init);
+                throw new GhostscriptAPICallException("gsapi_init_with_args", rc_init, _stdIO);
             }
         }
 
@@ -268,7 +265,7 @@ namespace Ghostscript.NET.Interpreter
 
                     if (ierrors.IsFatalIgnoreNeedInput(rc_run))
                     {
-                        throw new GhostscriptAPICallException("gsapi_run_string", rc_run);
+                        throw new GhostscriptAPICallException("gsapi_run_string", rc_run, _stdIO);
                     }
 
                     return rc_run;
@@ -280,7 +277,7 @@ namespace Ghostscript.NET.Interpreter
 
                     if (ierrors.IsFatalIgnoreNeedInput(rc_run_beg))
                     {
-                        throw new GhostscriptAPICallException("gsapi_run_string_begin", rc_run_beg);
+                        throw new GhostscriptAPICallException("gsapi_run_string_begin", rc_run_beg, _stdIO);
                     }
 
                     int chunkStart = 0;
@@ -296,7 +293,7 @@ namespace Ghostscript.NET.Interpreter
 
                         if (ierrors.IsFatalIgnoreNeedInput(rc_run_con))
                         {
-                            throw new GhostscriptAPICallException("gsapi_run_string_continue", rc_run_con);
+                            throw new GhostscriptAPICallException("gsapi_run_string_continue", rc_run_con, _stdIO);
                         }
 
                         chunkStart += chunkSize;
@@ -307,7 +304,7 @@ namespace Ghostscript.NET.Interpreter
 
                     if (ierrors.IsFatalIgnoreNeedInput(rc_run_end))
                     {
-                        throw new GhostscriptAPICallException("gsapi_run_string_end", rc_run_end);
+                        throw new GhostscriptAPICallException("gsapi_run_string_end", rc_run_end, _stdIO);
                     }
 
                     return rc_run_end;
@@ -339,7 +336,7 @@ namespace Ghostscript.NET.Interpreter
 
             if (ierrors.IsFatal(rc_run))
             {
-                throw new GhostscriptAPICallException("gsapi_run_file", rc_run);
+                throw new GhostscriptAPICallException("gsapi_run_file", rc_run, _stdIO);
             }
         }
 

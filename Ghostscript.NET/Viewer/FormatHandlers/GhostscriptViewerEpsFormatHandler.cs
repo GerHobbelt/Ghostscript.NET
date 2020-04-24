@@ -105,21 +105,6 @@ namespace Ghostscript.NET.Viewer
             this.LastPageNumber = 1;
         }
 
-        public override void StdInput(out string input, int count)
-        {
-            input = string.Empty;
-        }
-
-        public override void StdOutput(string message)
-        {
-
-        }
-
-        public override void StdError(string message)
-        {
-
-        }
-
         public override void InitPage(int pageNumber)
         {
 

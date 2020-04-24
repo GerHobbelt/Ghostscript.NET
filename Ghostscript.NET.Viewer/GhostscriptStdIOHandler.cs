@@ -34,28 +34,13 @@ namespace Ghostscript.NET.Viewer
 {
     public class GhostscriptStdIOHandler : GhostscriptStdIO
     {
-        private StringBuilder _stdOut;
-        private StringBuilder _stdErr;
-
-        public GhostscriptStdIOHandler(StringBuilder stdOut, StringBuilder stdErr) : base(false, true, true)
+        public GhostscriptStdIOHandler() : base(false, true, true)
         {
-            _stdOut = stdOut;
-            _stdErr = stdErr;
         }
 
         public override void StdIn(out string input, int count)
         {
             throw new NotImplementedException();
-        }
-
-        public override void StdOut(string output)
-        {
-            _stdOut.AppendLine(output);
-        }
-
-        public override void StdError(string error)
-        {
-            _stdErr.AppendLine(error);
         }
     }
 }

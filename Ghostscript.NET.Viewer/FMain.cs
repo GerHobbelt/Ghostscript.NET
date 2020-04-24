@@ -42,8 +42,7 @@ namespace Ghostscript.NET.Viewer
     {
         private GhostscriptViewer _viewer;
         private GhostscriptVersionInfo _gsVersion = GhostscriptVersionInfo.GetLastInstalledVersion();
-        private StringBuilder _stdOut = new StringBuilder();
-        private StringBuilder _stdErr = new StringBuilder();
+        private GhostscriptStdIOHandler _stdIOhandler;
         private bool _supressPageNumberChangeEvent = false;
 
         public FMain()
@@ -56,7 +55,8 @@ namespace Ghostscript.NET.Viewer
             pbPage.Height = 100;
 
             _viewer = new GhostscriptViewer();
-            _viewer.AttachStdIO(new GhostscriptStdIOHandler(_stdOut, _stdErr));
+            _stdIOhandler = new GhostscriptStdIOHandler();
+            _viewer.AttachStdIO(_stdIOhandler);
 
             _viewer.DisplaySize += new GhostscriptViewerViewEventHandler(_viewer_DisplaySize);
             _viewer.DisplayUpdate += new GhostscriptViewerViewEventHandler(_viewer_DisplayUpdate);
@@ -105,7 +105,7 @@ namespace Ghostscript.NET.Viewer
             {
                 mnuFileClose_Click(this, null);
 
-                _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> OPEN");
+                _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> OPEN");
 
                 _viewer.Open(ofd.FileName, _gsVersion, false);
 
@@ -117,8 +117,7 @@ namespace Ghostscript.NET.Viewer
         {
             _viewer.Close();
 
-            _stdOut.Clear();
-            _stdErr.Clear();
+            _stdIOhandler.ClearOutput();
 
             pbPage.Image = null;
             this.Text = Program.NAME;
@@ -134,25 +133,25 @@ namespace Ghostscript.NET.Viewer
 
         private void tbPageFirst_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW FIRST PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW FIRST PAGE");
             _viewer.ShowFirstPage();
         }
 
         private void tbPagePrevious_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW PREVIOUS PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW PREVIOUS PAGE");
             _viewer.ShowPreviousPage();
         }
 
         private void tbPageNext_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW NEXT PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW NEXT PAGE");
             _viewer.ShowNextPage();
         }
 
         private void tbPageLast_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW LAST PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW LAST PAGE");
             _viewer.ShowLastPage();
         }
 
@@ -164,7 +163,7 @@ namespace Ghostscript.NET.Viewer
                 {
                     if (tbPageNumber.Text.Length > 0)
                     {
-                        _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW PAGE " + tbPageNumber.Text);
+                        _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW PAGE " + tbPageNumber.Text);
                         _viewer.ShowPage(int.Parse(tbPageNumber.Text));
                     }
                 }
@@ -179,51 +178,46 @@ namespace Ghostscript.NET.Viewer
 
         private void mnuNext_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW NEXT PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW NEXT PAGE");
             _viewer.ShowNextPage();
         }
 
         private void mnuPrev_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW PREVIOUS PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW PREVIOUS PAGE");
             _viewer.ShowPreviousPage();
         }
 
         private void mnuFirst_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW LAST PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW LAST PAGE");
             _viewer.ShowFirstPage();
         }
 
         private void mnuLast_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW LAST PAGE");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> SHOW LAST PAGE");
             _viewer.ShowLastPage();
         }
 
         private void tpZoomIn_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> ZOOM IN");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> ZOOM IN");
             _viewer.ZoomIn();
         }
 
         private void tpZoomOut_Click(object sender, EventArgs e)
         {
-            _stdOut.AppendLine("@GSNET_VIEWER -> COMMAND -> ZOOM OUT");
+            _stdIOhandler.AppendLine("@GSNET_VIEWER -> COMMAND -> ZOOM OUT");
             _viewer.ZoomOut();
         }
 
         private void tbDebug_Click(object sender, EventArgs e)
         {
-
-            FDebug debug = new FDebug();
-            debug.txtDebug.AppendText("StdOut:\r\n");
+                        FDebug debug = new FDebug();
+            debug.txtDebug.AppendText("StdOut + stdErr:\r\n");
             debug.txtDebug.AppendText("---------------------------------------------------------------------------\r\n");
-            debug.txtDebug.AppendText(_stdOut.ToString() + "\r\n");
-            debug.txtDebug.AppendText("===========================================================================\r\n");
-            debug.txtDebug.AppendText("StdErr:\r\n");
-            debug.txtDebug.AppendText("---------------------------------------------------------------------------\r\n");
-            debug.txtDebug.AppendText(_stdErr.ToString() + "\r\n");
+            debug.txtDebug.AppendText(_stdIOhandler.GetOutput() + "\r\n");
             debug.txtDebug.AppendText("===========================================================================\r\n");
             debug.ShowDialog(this);
             debug.Dispose();

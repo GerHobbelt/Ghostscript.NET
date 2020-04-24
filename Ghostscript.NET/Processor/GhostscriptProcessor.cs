@@ -200,7 +200,7 @@ namespace Ghostscript.NET.Processor
 
             if (ierrors.IsError(rc_ins))
             {
-                throw new GhostscriptAPICallException("gsapi_new_instance", rc_ins);
+                throw new GhostscriptAPICallException("gsapi_new_instance", rc_ins, _internalStdIO_Callback);
             }
 
             try
@@ -223,12 +223,12 @@ namespace Ghostscript.NET.Processor
 
                 if (ierrors.IsError(rc_pool))
                 {
-                    throw new GhostscriptAPICallException("gsapi_set_poll", rc_pool);
+                    throw new GhostscriptAPICallException("gsapi_set_poll", rc_pool, _internalStdIO_Callback);
                 }
 
                 if (ierrors.IsError(rc_stdio))
                 {
-                    throw new GhostscriptAPICallException("gsapi_set_stdio", rc_stdio);
+                    throw new GhostscriptAPICallException("gsapi_set_stdio", rc_stdio, _internalStdIO_Callback);
                 }
 
                 this.OnStarted(new GhostscriptProcessorEventArgs());
@@ -246,7 +246,7 @@ namespace Ghostscript.NET.Processor
                 {
                     if (!ierrors.IsInterrupt(rc_init))
                     {
-                        throw new GhostscriptAPICallException("gsapi_init_with_args", rc_init);
+                        throw new GhostscriptAPICallException("gsapi_init_with_args", rc_init, _internalStdIO_Callback);
                     }
                 }
             }
@@ -264,7 +264,7 @@ namespace Ghostscript.NET.Processor
 
                     if (ierrors.IsErrorIgnoreQuit(rc_exit))
                     {
-                        throw new GhostscriptAPICallException("gsapi_exit", rc_exit);
+                        throw new GhostscriptAPICallException("gsapi_exit", rc_exit, _internalStdIO_Callback);
                     }
                 }
                 finally

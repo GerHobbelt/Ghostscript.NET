@@ -34,7 +34,6 @@ namespace Ghostscript.NET.Viewer
 {
     internal class GhostscriptViewerPdfFormatHandler : GhostscriptViewerFormatHandler
     {
-        
         private const string PDF_TAG = "%GSNET";
         private const string PDF_PAGES_TAG = "%GSNET_VIEWER_PDF_PAGES: ";
         private const string PDF_PAGE_TAG = "%GSNET_VIEWER_PDF_PAGE: ";
@@ -44,12 +43,12 @@ namespace Ghostscript.NET.Viewer
         private const string PDF_DONE_TAG = "%GSNET_VIEWER_PDF_DONE: ";
         private const string PDF_MARK_TAG = "%GSNET_VIEWER_PDF_MARK: ";
 
-        
-        
+
+
         public GhostscriptViewerPdfFormatHandler(GhostscriptViewer viewer) : base(viewer) { }
 
-        
-        
+
+
         public override void Initialize()
         {
             // define our routine for preparing to show a page.  
@@ -117,13 +116,6 @@ namespace Ghostscript.NET.Viewer
             // if we don't run that code, then optional content groups will be left unmarked and always processed
             res = this.Execute("process_trailer_attrs\n");
             chk();
-        }
-
-        
-        
-        public override void StdInput(out string input, int count)
-        {
-            input = string.Empty;
         }
 
 
@@ -235,18 +227,10 @@ namespace Ghostscript.NET.Viewer
                                         break;
                                 }
                             }
-
                             break;
                         }
                 }
             }
-        }
-
-
-
-        public override void StdError(string message)
-        {
-
         }
 
 
@@ -276,7 +260,5 @@ namespace Ghostscript.NET.Viewer
                 throw new ArgumentOutOfRangeException("Page number is not in pages number range!");
             }
         }
-
-
     }
 }
